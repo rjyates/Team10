@@ -9,6 +9,7 @@ public class help{
     private JLabel backgroundLabel;
     //private JLabel tester;
     private Timer timer;
+
     
     public help() {
         frame = new JFrame("Team Ten - light em up");
@@ -60,36 +61,101 @@ public class help{
 
         private static void createAndShowPlayerEntry(JFrame f) {
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            f.setSize(600, 600);
+            f.setSize(1050, 669);
             f.setLayout(null); // Use null layout for custom button placement
+            //f.setBackground(Color.black);
+            f.getContentPane().setBackground(Color.BLACK);
             
+            // JLabel pink = new JLabel("pink team", JLabel.LEFT);
+            // pink.setForeground(Color.MAGENTA);
+            // f.add(pink);
 
-            // Create an array to hold the button locations
-            int[][] buttonLocations = {
-                {95, 73}, {95, 150}, {95, 230}, {95, 308}, {95, 467}, {95, 544},
+
+            //pink team title
+            JButton pink = new JButton("Pink Team");
+            pink.setForeground(Color.WHITE);
+            pink.setBackground(Color.BLACK);
+            pink.setOpaque(true);
+            pink.setBorderPainted(false);
+            pink.setBounds(200, 5, 200, 50);
+            pink.setFont(new Font("Georgia", Font.PLAIN, 30));
+            f.add(pink);
+
+            //blue team title
+            JButton blue = new JButton("Blue Team");
+            blue.setForeground(Color.WHITE);
+            blue.setBackground(Color.BLACK);
+            blue.setOpaque(true);
+            blue.setBorderPainted(false);
+            blue.setBounds(500, 5, 200, 50);
+            blue.setFont(new Font("Georgia", Font.PLAIN, 30));
+            f.add(blue);
+
+
+            // Create an array to hold the pink button locations
+            int[][] buttonLocationsP = {
+                {95, 73}, {95, 150}, {95, 230}, {95, 308}, {95, 388}, {95, 467}, {95, 544},
                 {310, 73}, {310, 150}, {310, 230}, {310, 308}, {310, 388}, {310, 467}, {310, 547}
             };
             
             // Create an array to hold the buttons
-            JButton[] buttons = new JButton[buttonLocations.length];
+            JButton[] buttonsP = new JButton[buttonLocationsP.length];
+           
+            // Create an array to hold the blue button locations
+            int[][] buttonLocationsB = {
+                {575, 73}, {575, 150}, {575, 230}, {575, 308}, {575, 388}, {575, 467}, {575, 544},
+                {783, 73}, {783, 150}, {783, 230}, {783, 308}, {783, 388}, {783, 467}, {783, 547}
+            };
             
-            for (int i = 0; i < buttonLocations.length; i++) {
-                int[] location = buttonLocations[i];
+            JButton[] buttonsB = new JButton[buttonLocationsB.length];
+            
+            for (int i = 0; i < buttonLocationsP.length; i++) {
+                int[] location = buttonLocationsP[i];
                 JButton button = new JButton("Click me to enter text");
                 button.setBounds(location[0], location[1], 200, 72);
                 //button.setBackground(Color.BLACK);
+                button.setBackground(Color.MAGENTA);
+                button.setOpaque(true);
+                button.setBorderPainted(false);
+                button.setFont(new Font("Georgia", Font.PLAIN, 15));
                 final int buttonIndex = i; // Use a final variable for ActionListener
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String name = JOptionPane.showInputDialog(f, "Enter text:");
                         if (name != null && !name.isEmpty()) {
-                            buttons[buttonIndex].setText(name);
+                            buttonsP[buttonIndex].setText(name);
                         }
+                        
                     }
                 });
                 
-                buttons[i] = button; // Store the button in the array
+                buttonsP[i] = button; // Store the button in the array
+                f.add(button);
+            }
+
+            for (int i = 0; i < buttonLocationsB.length; i++) {
+                int[] location = buttonLocationsB[i];
+                JButton button = new JButton("Click me to enter text");
+                button.setBounds(location[0], location[1], 200, 72);
+                //button.setBackground(Color.BLACK);
+                button.setBackground(Color.BLUE);
+                button.setOpaque(true);
+                button.setBorderPainted(false);
+                button.setFont(new Font("Georgia", Font.PLAIN, 15));
+                final int buttonIndex = i; // Use a final variable for ActionListener
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String name = JOptionPane.showInputDialog(f, "Enter text:");
+                        if (name != null && !name.isEmpty()) {
+                            buttonsB[buttonIndex].setText(name);
+                        }
+                        
+                    }
+                });
+                
+                buttonsB[i] = button; // Store the button in the array
                 f.add(button);
             }
             
