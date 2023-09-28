@@ -4,13 +4,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class help {
+public class laser {
     private JFrame frame;
     private JLabel backgroundLabel;
     // private JLabel tester;
     private Timer timer;
 
-    public help() {
+    public laser() {
         frame = new JFrame("Team Ten - light em up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1050, 669);
@@ -50,10 +50,7 @@ public class help {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new help();
-
-            }
+            public void run() { new laser(); }
         });
     }
 
