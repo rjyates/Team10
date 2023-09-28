@@ -10,10 +10,9 @@ class PlayerEntry {
 		ImageIcon backround = new ImageIcon("PlayerEntryScreen.png");
 		JLabel myLabel = new JLabel(backround);
 		myLabel.setSize(3487, 2221);
-		
+
 		PlayerEntryFrame f = new PlayerEntryFrame(4000, 3000);
 		f.add(myLabel);
-		
-		
+
 	}
 }
