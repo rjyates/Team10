@@ -5,32 +5,28 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-public class UDPServer implements Runnable
-{
+public class UDPServer implements Runnable {
 	public ArrayList<Integer> Shoot = new ArrayList<>();
 	public ArrayList<Integer> Hit = new ArrayList<>();
-	DatagramSocket ds;
+	DatagramSocket rec, brd;
 
-	public void run()
-	{
-		try{
-			ds = new DatagramSocket(7501);
-		}
-		catch(IOException e){
+	public void run() {
+		try {
+			rec = new DatagramSocket(7501);
+			brd = new DatagramSocket(7500);
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	
 
 		byte[] receive = new byte[65535];
 		DatagramPacket DpReceive = null;
 
-		while (true)
-		{
+		while (true) {
 			DpReceive = new DatagramPacket(receive, receive.length);
 
-			try{
-				ds.receive(DpReceive);
-			}
-			catch(IOException e){
+			try {
+				rec.receive(DpReceive);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
@@ -41,21 +37,29 @@ public class UDPServer implements Runnable
 			int idOfPlayerHit = Integer.parseInt(playerIds[1]);
 			Shoot.add(idOfPlayerShooting);
 			Hit.add(idOfPlayerHit);
+			try {
+				// Broadcast player hit
+				brd.send(
+					new DatagramPacket(
+						new byte[]{(byte) idOfPlayerHit},
+						1));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
 			receive = new byte[65535];
 		}
 	}
 
-	public static StringBuilder data(byte[] a)
-	{
+	public static StringBuilder data(byte[] a) {
 		if (a == null)
 			return null;
 		StringBuilder ret = new StringBuilder();
 		int i = 0;
-		while (a[i] != 0){
+		while (a[i] != 0) {
 			ret.append((char) a[i]);
 			i++;
 		}
 		return ret;
 	}
-	
+
 }
