@@ -126,41 +126,10 @@ public class laser {
                     if (name != null && !name.isEmpty()) {
                     buttonsP[buttonIndex].setText(name);
                     if(buttonIndex<7){
-                        try{
-                            int playerID = Integer.parseInt(name); // Convert 'name' to an integer
-                            // Call the findPlayer method of databaseHandler here and pass 'playerID' as an argument
-                            try {
-                            String codeName = databaseHandler.findPlayer(playerID);
-                            if (codeName != null) {
-                                System.out.println("Pink Team Button " + buttonIndex + " Text: " + name);
-                                System.out.println("codeName from database: " + codeName);
-                                buttonsP[buttonIndex+7].setText(codeName);
-                            } else {
-                                System.out.println("No match found in the database for playerID: " + playerID);
-                            }
-                            } catch (SQLException ex) {
-                                ex.printStackTrace();
-                            }
-                        } catch (NumberFormatException ex) {
-                        // Handle the case where 'name' cannot be converted to an integer
-                        System.out.println("Invalid input. Please enter a valid integer.");
-                        }
+                        handleID(name, buttonIndex, buttonsP);
                     }
                     else{
-                        String newCodeName = name;
-                        String IDstring = buttonsP[buttonIndex-7].getText();
-                        int playerID = -1;
-                        try{
-                            playerID = Integer.parseInt(IDstring);
-                        } catch (NumberFormatException ex) {
-                        // Handle the case where 'name' cannot be converted to an integer
-                        System.out.println(ex);
-                        }
-                        try{
-                            databaseHandler.savePlayerName(playerID, newCodeName);
-                        } catch (SQLException exception){
-                            System.out.println(exception);
-                        }
+                        handleCodeName(name, buttonIndex, buttonsP);
                     }
                     }
                 }
@@ -185,9 +154,13 @@ public class laser {
                     String name = JOptionPane.showInputDialog(f, "Enter text:");
                     if (name != null && !name.isEmpty()) {
                         buttonsB[buttonIndex].setText(name);
-                        System.out.println("Blue Team Button " + buttonIndex + " Text: " + name);
+                        if(buttonIndex<7){
+                        handleID(name, buttonIndex, buttonsB);
                     }
-
+                    else{
+                        handleCodeName(name, buttonIndex, buttonsB);
+                    }
+                }
                 }
             });
 
@@ -196,6 +169,43 @@ public class laser {
         }
 
         f.setVisible(true);
+    }
+    public static void handleID(String name, final int buttonIndex, JButton[] buttonsArray){
+        try{
+            int playerID = Integer.parseInt(name); // Convert 'name' to an integer
+            // Call the findPlayer method of databaseHandler here and pass 'playerID' as an argument
+            try {
+            String codeName = databaseHandler.findPlayer(playerID);
+            if (codeName != null) {
+                System.out.println("Blue Team Button " + buttonIndex + " Text: " + name);
+                System.out.println("codeName from database: " + codeName);
+                buttonsArray[buttonIndex+7].setText(codeName);
+            } else {
+                System.out.println("No match found in the database for playerID: " + playerID);
+            }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (NumberFormatException ex) {
+        // Handle the case where 'name' cannot be converted to an integer
+        System.out.println("Invalid input. Please enter a valid integer.");
+        }
+    }
+    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray){
+        String newCodeName = name;
+        String IDstring = buttonsArray[buttonIndex-7].getText();
+        int playerID = -1;
+        try{
+            playerID = Integer.parseInt(IDstring);
+        } catch (NumberFormatException ex) {
+        // Handle the case where 'name' cannot be converted to an integer
+        System.out.println(ex);
+        }
+        try{
+            databaseHandler.savePlayerName(playerID, newCodeName);
+        } catch (SQLException exception){
+            System.out.println(exception);
+        }
     }
 }
 
