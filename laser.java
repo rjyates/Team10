@@ -1,4 +1,9 @@
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+// import java.sql.Statement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +14,7 @@ public class laser {
     private JLabel backgroundLabel;
     // private JLabel tester;
     private Timer timer;
+    private static DatabaseHandler databaseHandler;
 
     public laser() {
         frame = new JFrame("Team Ten - light em up");
@@ -19,6 +25,7 @@ public class laser {
         backgroundLabel = new JLabel(new ImageIcon("logo.jpg"));
         frame.add(backgroundLabel, BorderLayout.CENTER);
 
+        databaseHandler = new DatabaseHandler();
         // tester = new JLabel("here");
         // tester.setBounds(96, 74, 200, 72);
         // frame.add(tester);
@@ -117,12 +124,47 @@ public class laser {
                 public void actionPerformed(ActionEvent e) {
                     String name = JOptionPane.showInputDialog(f, "Enter text:");
                     if (name != null && !name.isEmpty()) {
-                        buttonsP[buttonIndex].setText(name);
+                    buttonsP[buttonIndex].setText(name);
+                    if(buttonIndex<7){
+                        try{
+                            int playerID = Integer.parseInt(name); // Convert 'name' to an integer
+                            // Call the findPlayer method of databaseHandler here and pass 'playerID' as an argument
+                            try {
+                            String codeName = databaseHandler.findPlayer(playerID);
+                            if (codeName != null) {
+                                System.out.println("Pink Team Button " + buttonIndex + " Text: " + name);
+                                System.out.println("codeName from database: " + codeName);
+                                buttonsP[buttonIndex+7].setText(codeName);
+                            } else {
+                                System.out.println("No match found in the database for playerID: " + playerID);
+                            }
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        } catch (NumberFormatException ex) {
+                        // Handle the case where 'name' cannot be converted to an integer
+                        System.out.println("Invalid input. Please enter a valid integer.");
+                        }
                     }
-
+                    else{
+                        String newCodeName = name;
+                        String IDstring = buttonsP[buttonIndex-7].getText();
+                        int playerID = -1;
+                        try{
+                            playerID = Integer.parseInt(IDstring);
+                        } catch (NumberFormatException ex) {
+                        // Handle the case where 'name' cannot be converted to an integer
+                        System.out.println(ex);
+                        }
+                        try{
+                            databaseHandler.savePlayerName(playerID, newCodeName);
+                        } catch (SQLException exception){
+                            System.out.println(exception);
+                        }
+                    }
+                    }
                 }
             });
-
             buttonsP[i] = button; // Store the button in the array
             f.add(button);
         }
@@ -143,6 +185,7 @@ public class laser {
                     String name = JOptionPane.showInputDialog(f, "Enter text:");
                     if (name != null && !name.isEmpty()) {
                         buttonsB[buttonIndex].setText(name);
+                        System.out.println("Blue Team Button " + buttonIndex + " Text: " + name);
                     }
 
                 }
@@ -153,5 +196,57 @@ public class laser {
         }
 
         f.setVisible(true);
+    }
+}
+
+class DatabaseHandler{
+    private Connection connection;
+
+    public DatabaseHandler() {
+        // Initialize the database connection here
+        String url = "jdbc:postgresql://db.nfewhqdbnfmiqcntmxmz.supabase.co:5432/postgres";
+        try {
+            connection = DriverManager.getConnection(url, "postgres", "team10Database!");
+            if(connection!=null){
+                System.out.println("Connection established!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void savePlayerName(int playerID, String codeName) throws SQLException {
+        try {
+            // Perform the database operation to save player name based on the team
+            String sqlQuery = "INSERT INTO player (id, codename) VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, playerID);
+            preparedStatement.setString(2, codeName);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Data inserted successfully.");
+            } else {
+                System.out.println("Insert failed.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public String findPlayer(int playerID) throws SQLException{
+        String sqlQuery = "SELECT codename FROM player WHERE id= ?";
+        // String codeName = "yo";
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+             
+        preparedStatement.setInt(1, playerID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if(resultSet.next()) {
+            String codename = resultSet.getString("codename");
+            return codename;
+        }
+        else{
+            // savePlayerName(playerID, codeName);
+            return null;
+        }
+             
     }
 }
