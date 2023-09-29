@@ -122,15 +122,20 @@ public class laser {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String name = JOptionPane.showInputDialog(f, "Enter text:");
-                    if (name != null && !name.isEmpty()) {
-                    buttonsP[buttonIndex].setText(name);
-                    if(buttonIndex<7){
-                        handleID(name, buttonIndex, buttonsP);
-                    }
-                    else{
-                        handleCodeName(name, buttonIndex, buttonsP);
-                    }
+                    String input =  JOptionPane.showInputDialog(f, "Enter value:");
+                    // String name = JOptionPane.showInputDialog(f, "Enter text:");
+                    if (input != null && !input.isEmpty()) {
+                        if(buttonIndex<7){ //playerID columns
+                            while (input != null && !input.matches("-?\\d+")) {
+                                input = JOptionPane.showInputDialog(f, "Enter value:");
+                            }
+                            buttonsP[buttonIndex].setText(input);
+                            handleID(input, buttonIndex, buttonsP);
+                        }
+                        else{ //codeName column
+                            handleCodeName(input, buttonIndex, buttonsP);
+                            buttonsP[buttonIndex].setText(input);
+                        }
                     }
                 }
             });
@@ -151,14 +156,18 @@ public class laser {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String name = JOptionPane.showInputDialog(f, "Enter text:");
-                    if (name != null && !name.isEmpty()) {
-                        buttonsB[buttonIndex].setText(name);
+                    String input =  JOptionPane.showInputDialog(f, "Enter value:");
+                    if (input != null && !input.isEmpty()) {
                         if(buttonIndex<7){
-                        handleID(name, buttonIndex, buttonsB);
+                            while (input != null && !input.matches("-?\\d+")) {
+                                input = JOptionPane.showInputDialog(f, "Enter value:");
+                            }
+                            buttonsB[buttonIndex].setText(input);
+                            handleID(input, buttonIndex, buttonsB);
                     }
                     else{
-                        handleCodeName(name, buttonIndex, buttonsB);
+                        handleCodeName(input, buttonIndex, buttonsB);
+                        buttonsB[buttonIndex].setText(input);
                     }
                 }
                 }
