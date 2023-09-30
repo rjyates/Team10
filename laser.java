@@ -15,6 +15,7 @@ public class laser {
     // private JLabel tester;
     private Timer timer;
     private static DatabaseHandler databaseHandler;
+    private static UDPClient client;
 
     public laser() {
         frame = new JFrame("Team Ten - light em up");
@@ -219,8 +220,19 @@ public class laser {
             System.out.println(exception);
         }
     }
-    public static void handleEquitmentId(){
-        
+   public static void handleEquitmentId(){
+        //needs to store equipment id with the player id
+        //will transmit equipment id of player after player entry
+        //broadcast over socket 7500
+       //this method needs to be called after the equipment id stuff is handled in player entry
+        try
+        {
+            client.intialize();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
 
