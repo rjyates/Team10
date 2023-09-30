@@ -219,6 +219,9 @@ public class laser {
             System.out.println(exception);
         }
     }
+    public static void handleEquitmentId(){
+        
+    }
 }
 
 class DatabaseHandler{
