@@ -59,6 +59,9 @@ public class laser {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { new laser(); }
         });
+
+        UDPClient client = new UDPClient();
+        client.initialize();
     }
 
     private static void createAndShowPlayerEntry(JFrame f) {
