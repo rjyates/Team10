@@ -1,3 +1,4 @@
+package Team10;
 //import javax.swing.*;
 //
 //class PlayerEntry {
