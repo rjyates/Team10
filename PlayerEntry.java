@@ -1,3 +1,4 @@
+package Team10;
 import javax.swing.*;
 
 // Need to change JLabel to a drawImage() so that it properly fits the screen
