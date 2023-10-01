@@ -1,3 +1,4 @@
+package Team10;
 import javax.swing.JFrame;
 
 public class PlayerEntryFrame extends JFrame {
