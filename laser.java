@@ -16,6 +16,7 @@ public class laser {
     private Timer timer;
     private static DatabaseHandler databaseHandler;
     private static UDPClient client;
+    private static UDPServer server;
 
     public laser() {
         frame = new JFrame("Team Ten - light em up");
@@ -54,15 +55,15 @@ public class laser {
 
         frame.setVisible(true);
         // frame.add(tester);
+
+        client = new UDPClient();
+        server = new UDPServer();
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { new laser(); }
         });
-
-        UDPClient client = new UDPClient();
-        client.initialize();
     }
 
     private static void createAndShowPlayerEntry(JFrame f) {
@@ -219,21 +220,17 @@ public class laser {
         } catch (SQLException exception){
             System.out.println(exception);
         }
-    }
-   public static void handleEquitmentId(){
-        //needs to store equipment id with the player id
-        //will transmit equipment id of player after player entry
-        //broadcast over socket 7500
-       //this method needs to be called after the equipment id stuff is handled in player entry
-        try
+
+        //calling method in UDP client to run after codename is handled
+         try
         {
-            client.intialize();
+            client.initialize();
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }
-    }
+    } 
 }
 
 class DatabaseHandler{
