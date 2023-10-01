@@ -1,15 +1,25 @@
+package Team10;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class UDPServer
+public class UDPServer implements Runnable
 {
-	public static void main(String[] args) throws IOException
+	DatagramSocket ds;
+
+	public void run()
 	{
 		// Step 1 : Create a socket to listen at port 1234
-		DatagramSocket ds = new DatagramSocket(7501);
+		try
+		{
+			ds = new DatagramSocket(7501);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 		byte[] receive = new byte[65535];
 
 		DatagramPacket DpReceive = null;
@@ -20,7 +30,14 @@ public class UDPServer
 			DpReceive = new DatagramPacket(receive, receive.length);
 
 			// Step 3 : revieve the data in byte buffer.
-			ds.receive(DpReceive);
+			try
+			{
+				ds.receive(DpReceive);
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
 
 			System.out.println("Client:-" + data(receive));
 
