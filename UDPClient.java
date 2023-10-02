@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class UDPClient {
-	public void intialize() throws IOException {
+	public void initialize() throws IOException {
 		Scanner sc = new Scanner(System.in);
 
 		DatagramSocket ds = new DatagramSocket();
