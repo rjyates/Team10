@@ -13,7 +13,7 @@ public class UDPClient {
 
 		DatagramSocket ds = new DatagramSocket();
 
-		InetAddress ip = InetAddress.getLocalHost();
+		InetAddress ip = InetAddress.getByName("127.0.0.1");
 		byte buffer[] = null;
 
 		System.out.println("Enter id of pink player 1 ==> ");
@@ -38,14 +38,14 @@ public class UDPClient {
 
 		
 		while (i <= counter) {
-			if (rand.nextInt(1, 3) == 1) {
+			if ((rand.nextInt(2) + 1) == 1) {
 				pinkplayer = pink1;
 			
 			} else {
 				pinkplayer = pink2;
 			}
 
-			if (rand.nextInt(1, 3) == 1) {
+			if ((rand.nextInt(2) + 1) == 1) {
 				blueplayer = blue1;
 			
 			} 
@@ -53,7 +53,7 @@ public class UDPClient {
 				blueplayer = blue2;
 			}
 
-			if (rand.nextInt(1, 3) == 1) {
+			if ((rand.nextInt(2) + 1) == 1) {
 				udpmessage = String.valueOf(pinkplayer) + ":" + String.valueOf(blueplayer);
 			}
 			else {
@@ -66,3 +66,4 @@ public class UDPClient {
 		}
 	}
 }
+
