@@ -30,7 +30,6 @@ public class laser {
 
         databaseHandler = new DatabaseHandler();
         
-
         timer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,23 +49,19 @@ public class laser {
         frame.setForeground(Color.BLACK);
 
         frame.setVisible(true);
-
-        client = new UDPClient();
-        server = new UDPServer();
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { new laser(); }
         });
-
+        
+        client = new UDPClient();
+        server = new UDPServer();
         //calling method in UDP client to run after codename is handled
-         try
-        {
+        try {
             client.initialize();
-        }
-        catch(IOException e)
-        {
+        }catch(IOException e) {
             e.printStackTrace();
         }
     }
@@ -316,14 +311,15 @@ public class laser {
         }
 
         //calling method in UDP client to run after codename is handled
-         try
+        
+         /* try
         {
             // client.initialize();
         }
         catch(IOException e)
         {
             e.printStackTrace();
-        }
+        } */
     } 
 }
 
