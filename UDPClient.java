@@ -3,43 +3,67 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
-public class UDPClient
-{
-	public void initialize() throws IOException
-	{
+
+public class UDPClient {
+	public void initialize() throws IOException {
 		Scanner sc = new Scanner(System.in);
 
-		// Step 1:Create the socket object for
-		// carrying the data.
 		DatagramSocket ds = new DatagramSocket();
 
 		InetAddress ip = InetAddress.getLocalHost();
-		byte buf[] = null;
+		byte buffer[] = null;
 
-		System.out.println("Enter equipment id of player  ==> ");
-		int eqId = Integer.parseInt(sc.nextLine());
+		System.out.println("Enter id of pink player 1 ==> ");
+		int pink1 = Integer.parseInt(sc.nextLine());
+		System.out.println("Enter id of pink player 2 ==> ");
+		int pink2 = Integer.parseInt(sc.nextLine());
+		System.out.println("Enter id of blue player 1 ==> ");
+		int blue1 = Integer.parseInt(sc.nextLine());
+		System.out.println("Enter id of blue player 2 ==> ");
+		int blue2 = Integer.parseInt(sc.nextLine());
 
-		// loop while user not enters "bye"
-		while (true)
-		{
-			String eq = String.valueOf(eqId);
-			// convert the String input into the byte array.
-			buf = eq.getBytes();
+		System.out.println("");
+		System.out.println("counter ==> ");
+		
+        int counter = Integer.parseInt(sc.nextLine());
 
-			// Step 2 : Create the datagramPacket for sending
-			// the data.
-			DatagramPacket DpSend =
-				new DatagramPacket(buf, buf.length, ip, 1234);
+		int pinkplayer = 0;
+		int blueplayer = 0;
+		String udpmessage = "";
+		int i = 1;
+		Random rand = new Random();
 
-			// Step 3 : invoke the send call to actually send
-			// the data.
+		
+		while (i <= counter) {
+			if (rand.nextInt(1, 3) == 1) {
+				pinkplayer = pink1;
+			
+			} else {
+				pinkplayer = pink2;
+			}
+
+			if (rand.nextInt(1, 3) == 1) {
+				blueplayer = blue1;
+			
+			} 
+            else {
+				blueplayer = blue2;
+			}
+
+			if (rand.nextInt(1, 3) == 1) {
+				udpmessage = String.valueOf(pinkplayer) + ":" + String.valueOf(blueplayer);
+			}
+			else {
+				udpmessage = String.valueOf(blueplayer) + ":" + String.valueOf(pinkplayer);
+			}
+            buffer = udpmessage.getBytes();
+			DatagramPacket DpSend = new DatagramPacket(buffer, buffer.length, ip, 7501);
 			ds.send(DpSend);
-
-			// break the loop if user enters "bye"
-			if (eq.equals("bye"))
-				break;
+			i = i + 1;
 		}
 	}
 }

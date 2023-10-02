@@ -2,8 +2,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-// import java.sql.Statement;
+import java.sql.SQLException; 
+import java.sql.Statement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,33 +29,27 @@ public class laser {
         frame.add(backgroundLabel, BorderLayout.CENTER);
 
         databaseHandler = new DatabaseHandler();
-        // tester = new JLabel("here");
-        // tester.setBounds(96, 74, 200, 72);
-        // frame.add(tester);
-        // tester.setSize(200,72);
-        // tester.setLocation(96, 74);
-        // tester.setBounds(200, 72, 96, 74);
+        
 
         timer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Switch the background image after 10 seconds
                 backgroundLabel.setIcon(null);
-                // backgroundLabel.setIcon(new ImageIcon("PlayerEntryScreen.png"));
-                // frame.add(tester);
+                
                 frame.revalidate(); // Refresh the frame to reflect the new background
                 backgroundLabel.setBackground(Color.BLACK);
                 timer.stop(); // Stop the timer after switching the background
                 createAndShowPlayerEntry(frame);
             }
         });
+
         timer.setRepeats(false); // Set the timer to run only once
         timer.start(); // Start the timer
-        // frame.add(tester);
+    
         frame.setForeground(Color.BLACK);
 
         frame.setVisible(true);
-        // frame.add(tester);
 
         client = new UDPClient();
         server = new UDPServer();
@@ -65,18 +59,24 @@ public class laser {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { new laser(); }
         });
+
+        //calling method in UDP client to run after codename is handled
+         try
+        {
+            client.initialize();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private static void createAndShowPlayerEntry(JFrame f) {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(1050, 669);
         f.setLayout(null); // Use null layout for custom button placement
-        // f.setBackground(Color.black);
         f.getContentPane().setBackground(Color.BLACK);
 
-        // JLabel pink = new JLabel("pink team", JLabel.LEFT);
-        // pink.setForeground(Color.MAGENTA);
-        // f.add(pink);
 
         // pink team title
         JButton pink = new JButton("Pink Team");
@@ -84,7 +84,7 @@ public class laser {
         pink.setBackground(Color.BLACK);
         pink.setOpaque(true);
         pink.setBorderPainted(false);
-        pink.setBounds(200, 5, 200, 50);
+        pink.setBounds(210, 5, 200, 50);
         pink.setFont(new Font("Georgia", Font.PLAIN, 30));
         f.add(pink);
 
@@ -94,7 +94,7 @@ public class laser {
         blue.setBackground(Color.BLACK);
         blue.setOpaque(true);
         blue.setBorderPainted(false);
-        blue.setBounds(650, 5, 200, 50);
+        blue.setBounds(670, 5, 200, 50);
         blue.setFont(new Font("Georgia", Font.PLAIN, 30));
         f.add(blue);
 
@@ -123,6 +123,7 @@ public class laser {
 
         //pink buttons
         //ID column
+        //ID columns
         for (int i = 0; i < buttonLocationsPid.length; i++) {
             int[] location = buttonLocationsPid[i];
             JButton button = new JButton("Click to enter ID");
@@ -156,7 +157,7 @@ public class laser {
         }
 
         //pink codenames
-
+        // pink codenames
         for (int i = 0; i < buttonLocationsPname.length; i++) {
             int[] location = buttonLocationsPname[i];
             JButton button = new JButton("Click to enter name");
@@ -191,6 +192,7 @@ public class laser {
 
 
         //blue team
+        //ID
         for (int i = 0; i < buttonLocationsBid.length; i++) {
             int[] location = buttonLocationsBid[i];
             JButton button = new JButton("Click to enter ID");
@@ -218,7 +220,8 @@ public class laser {
             buttonsBid[i] = button; // Store the button in the array
             f.add(button);
         }
-
+        
+        //codenames
         for (int i = 0; i < buttonLocationsBname.length; i++) {
             int[] location = buttonLocationsBname[i];
             JButton button = new JButton("Click to enter name");
@@ -356,7 +359,7 @@ class DatabaseHandler{
             e.printStackTrace();
         }
     }
-    
+
     public String findPlayer(int playerID) throws SQLException{
         String sqlQuery = "SELECT codename FROM player WHERE id= ?";
         // String codeName = "yo";
