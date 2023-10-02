@@ -9,4 +9,5 @@ Regan Yates-		rjyates
 
 Instructions to run from terminal:
 javac -cp postgresql-42.6.0.jar *.java
-java -cp "postgresql-42.6.0.jar" laser
+java -cp "postgresql-42.6.0.jar:." laser (mac/linux)
+java -cp "postgresql-42.6.0.jar;." laser (windows)
