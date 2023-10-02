@@ -1,4 +1,3 @@
-package Team10;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
@@ -123,6 +122,7 @@ public class laser {
         JButton[] buttonsBname = new JButton[buttonLocationsBname.length];
 
         //pink buttons
+        //ID column
         for (int i = 0; i < buttonLocationsPid.length; i++) {
             int[] location = buttonLocationsPid[i];
             JButton button = new JButton("Click to enter ID");
@@ -154,6 +154,8 @@ public class laser {
             buttonsPid[i] = button; // Store the button in the array
             f.add(button);
         }
+
+        //pink codenames
 
         for (int i = 0; i < buttonLocationsPname.length; i++) {
             int[] location = buttonLocationsPname[i];
@@ -255,26 +257,34 @@ public class laser {
         f.setVisible(true);
     }
 
+    //when ID entered: check for existing, if not -> check for Code name, if yes -> enter into database
+    //when codename entered: check for id -> enter into database, if not, enter when ID entered
 
     public static void handleID(String id, final int buttonIndex, JButton[] buttonsArray){
         try{
             int playerID = Integer.parseInt(id); // Convert 'name' to an integer
+
             // Call the findPlayer method of databaseHandler here and pass 'playerID' as an argument
             try {
-            String codeName = databaseHandler.findPlayer(playerID);
-            if (codeName != null) {
-                System.out.println("Blue Team Button " + buttonIndex + " Text: " + id);
-                System.out.println("codeName from database: " + codeName);
-                buttonsArray[buttonIndex].setText(codeName);
-            } else {
-                System.out.println("No match found in the database for playerID: " + playerID);
-            }
+                String codeName = databaseHandler.findPlayer(playerID);
+                if (codeName != null) {
+                    System.out.println("Blue Team Button " + buttonIndex + " Text: " + id);
+                    System.out.println("codeName from database: " + codeName);
+                    buttonsArray[buttonIndex].setText(codeName);
+                } else {
+                    System.out.println("No match found in the database for playerID: " + playerID);
+                    //check if code name has already been entered into the columns:
+                    String checkInput = buttonsArray[buttonIndex].getText();
+                    if(checkInput!="Click to enter name"){
+                        databaseHandler.savePlayerName(playerID, checkInput);
+                    }
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         } catch (NumberFormatException ex) {
-        // Handle the case where 'id' cannot be converted to an integer
-        System.out.println("Invalid input. Please enter a valid integer.");
+            // Handle the case where 'id' cannot be converted to an integer
+            System.out.println("Invalid input. Please enter a valid integer.");
         }
     }
 
@@ -282,23 +292,30 @@ public class laser {
     public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray){
         String newCodeName = name;
         String IDstring = buttonsArray[buttonIndex].getText();
+        System.out.println(IDstring);
         int playerID = -1;
-        try{
-            playerID = Integer.parseInt(IDstring);
-        } catch (NumberFormatException ex) {
-        // Handle the case where 'name' cannot be converted to an integer
-            System.out.println(ex);
+        if(!IDstring.matches("-?\\D+")){
+            try{
+                playerID = Integer.parseInt(IDstring); //there is a valid ID corresponding to the codename
+                try{
+                    databaseHandler.savePlayerName(playerID, newCodeName);
+                } catch (SQLException exception){
+                    System.out.println(exception);
+                }
+
+            } catch (NumberFormatException ex) {
+                // Handle the case where 'name' cannot be converted to an integer
+                System.out.println(ex);
+            }
         }
-        try{
-            databaseHandler.savePlayerName(playerID, newCodeName);
-        } catch (SQLException exception){
-            System.out.println(exception);
+        else{
+            //do nothing, will add codename once ID has been entered
         }
 
         //calling method in UDP client to run after codename is handled
          try
         {
-            client.initialize();
+            // client.initialize();
         }
         catch(IOException e)
         {
