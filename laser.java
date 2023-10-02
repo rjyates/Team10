@@ -60,6 +60,16 @@ public class laser {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() { new laser(); }
         });
+
+        //calling method in UDP client to run after codename is handled
+         try
+        {
+            client.initialize();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private static void createAndShowPlayerEntry(JFrame f) {
@@ -288,15 +298,7 @@ public class laser {
             System.out.println(exception);
         }
 
-        //calling method in UDP client to run after codename is handled
-         try
-        {
-            client.initialize();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        
     } 
 }
 
