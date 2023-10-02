@@ -16,17 +16,17 @@ public class UDPClient {
 		InetAddress ip = InetAddress.getByName("127.0.0.1");
 		byte buffer[] = null;
 
-		System.out.println("Enter id of pink player 1 ==> ");
+		System.out.println("Enter equipment id of pink player 1 ==> ");
 		int pink1 = Integer.parseInt(sc.nextLine());
-		System.out.println("Enter id of pink player 2 ==> ");
+		System.out.println("Enter equipment id of pink player 2 ==> ");
 		int pink2 = Integer.parseInt(sc.nextLine());
-		System.out.println("Enter id of blue player 1 ==> ");
+		System.out.println("Enter equipment id of blue player 1 ==> ");
 		int blue1 = Integer.parseInt(sc.nextLine());
-		System.out.println("Enter id of blue player 2 ==> ");
+		System.out.println("Enter equipment id of blue player 2 ==> ");
 		int blue2 = Integer.parseInt(sc.nextLine());
 
 		System.out.println("");
-		System.out.println("counter ==> ");
+		System.out.println("how many test lasertag events do you want? ==> ");
 		
         int counter = Integer.parseInt(sc.nextLine());
 
