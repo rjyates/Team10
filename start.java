@@ -28,7 +28,16 @@ public class start {
         "seven.png",
         "eight.png",
         "nine.png",
-        "ten.png"
+        "ten.png",
+        "11.png",
+        "12.png",
+        "13.png",
+        "14.png",
+        "15.png",
+        "16.png",
+        "17.png",
+        "18.png",
+        "19.png"
     };
 
     private JLabel currentLabel;
@@ -39,9 +48,10 @@ public class start {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(750, 750);
         frame.setLayout(new BorderLayout());
+        frame.setBackground(Color.BLACK);
 
 
-        count = 10;
+        count = 19;
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,9 +59,17 @@ public class start {
                     if (currentLabel != null) {
                         frame.remove(currentLabel);
                     }
-                    addNewLabelWithIcon(imagePaths[count]);
-                    //System.out.println(count);
-                    count--;
+                    
+                    if(count == -1){
+                        //System.out.println("close");
+                        frame.dispose();
+                    }
+                    else{
+                        addNewLabelWithIcon(imagePaths[count]);
+                        //System.out.println(count);
+                        count--;
+                    }
+                    //count--;
                 } else {
                     timer.stop(); // Stop the timer after adding the labels 5 times
                 }
@@ -78,10 +96,12 @@ public class start {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
+            //public void run() { new start(); }
             @Override
             public void run() {
                 start example = new start();
                 example.display();
+                
                 }
             });
     }
