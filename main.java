@@ -5,7 +5,6 @@ public class main {
         
         laser l = new laser();
         UDPServer server = new UDPServer();
-        PlayerAction playAction = new PlayerAction(server);
         UDPClient client = new UDPClient();
 
         Thread serverthread = new Thread(server);
@@ -31,7 +30,7 @@ public class main {
 
         if (start.runner == false){
             //player action screen
-            PlayerAction play = new PlayerAction();
+            PlayerAction play = new PlayerAction(server);
 
         }
     }
