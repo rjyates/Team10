@@ -17,29 +17,16 @@ public class start {
     
     private Timer timer;
     private int count;
-    private String[] imagePaths = {
-        "zero.png",
-        "one.png",
-        "two.png",
-        "three.png",
-        "four.png",
-        "five.png",
-        "six.png",
-        "seven.png",
-        "eight.png",
-        "nine.png",
-        "ten.png",
-        "11.png",
-        "12.png",
-        "13.png",
-        "14.png",
-        "15.png",
-        "16.png",
-        "17.png",
-        "18.png",
-        "19.png"
+    private String[] imageNames = {
+        "zero.png", "one.png", "two.png", "three.png", "four.png", 
+        "five.png", "six.png", "seven.png", "eight.png", "nine.png", 
+        "ten.png", "11.png", "12.png", "13.png","14.png", "15.png",
+        "16.png",  "17.png", "18.png", "19.png", "20.png",
+        "21.png", "22.png", "23.png", "24.png", "25.png", 
+        "26.png", "27.png", "28.png", "29.png", "30.png"
     };
-
+    
+    private String imagePath = "count-images/";
     private JLabel currentLabel;
 
     public start() {
@@ -51,21 +38,22 @@ public class start {
         frame.setBackground(Color.BLACK);
 
 
-        count = 19;
+        count = 30;
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (count < imagePaths.length) {
+                if (count < imageNames.length) {
                     if (currentLabel != null) {
                         frame.remove(currentLabel);
                     }
                     
+
                     if(count == -1){
                         //System.out.println("close");
                         frame.dispose();
                     }
                     else{
-                        addNewLabelWithIcon(imagePaths[count]);
+                        addNewLabelWithIcon(imagePath + imageNames[count]);
                         //System.out.println(count);
                         count--;
                     }
