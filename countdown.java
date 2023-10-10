@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
-public class start {
+public class countdown {
     private JFrame frame;
     //private JLabel zero;
     
@@ -29,7 +29,7 @@ public class start {
     private String imagePath = "count-images/";
     private JLabel currentLabel;
 
-    public start() {
+    public countdown() {
        
         frame = new JFrame("start game count down");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +38,7 @@ public class start {
         frame.setBackground(Color.BLACK);
 
 
-        count = 30;
+        count = 5;
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,7 +87,7 @@ public class start {
             //public void run() { new start(); }
             @Override
             public void run() {
-                start example = new start();
+                countdown example = new countdown();
                 example.display();
                 
                 }
