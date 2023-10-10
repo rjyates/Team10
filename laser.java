@@ -19,6 +19,12 @@ public class laser {
     private static UDPClient client;
     private static UDPServer server;
 
+    //managing player ids: 
+    static String[] usedIDs = new String[7];
+    String defaultValue = "default";
+    static int counter = 0;
+
+
     public laser() {
         frame = new JFrame("Team Ten - light em up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,6 +55,11 @@ public class laser {
         frame.setForeground(Color.BLACK);
 
         frame.setVisible(true);
+
+        //initialzing ID array with default values:
+         for (int i = 0; i < 7; i++) {
+            usedIDs[i] = defaultValue;
+        }
     }
 
     public static void main(String[] args) {
@@ -117,7 +128,6 @@ public class laser {
         JButton[] buttonsBname = new JButton[buttonLocationsBname.length];
 
         //pink buttons
-        //ID column
         //ID columns
         for (int i = 0; i < buttonLocationsPid.length; i++) {
             int[] location = buttonLocationsPid[i];
@@ -132,14 +142,16 @@ public class laser {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String input =  JOptionPane.showInputDialog(f, "Enter value:");
-                    // String name = JOptionPane.showInputDialog(f, "Enter text:");
+                    String input =  JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                     if (input != null && !input.isEmpty()) {
                         //playerID columns
-                        while (input != null && !input.matches("-?\\d+")) {
-                            input = JOptionPane.showInputDialog(f, "Enter value:");
+                        while (input != null && !input.matches("\\d+")) {
+                            input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                         }
-
+                        while(isIDUsed(input, usedIDs)){ //ID has already been used by another player
+                            JOptionPane.showMessageDialog(f, "Invalid! That player ID is already in use.", "Error", JOptionPane.ERROR_MESSAGE);
+                            input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
+                        }
                         buttonsPid[buttonIndex].setText(input);
                         handleID(input, buttonIndex, buttonsPname);
                     }
@@ -166,13 +178,12 @@ public class laser {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String input =  JOptionPane.showInputDialog(f, "Enter name:");
-                    // String name = JOptionPane.showInputDialog(f, "Enter text:");
+                    String input =  JOptionPane.showInputDialog(f, "Enter codename:");
                     if (input != null && !input.isEmpty()) {
                         //codeName column
-                        while (input != null && !input.matches("-?\\D+")) 
+                        while (input != null && !input.matches("[\\w]+")) 
                         {
-                            input = JOptionPane.showInputDialog(f, "Enter name:");
+                            input = JOptionPane.showInputDialog(f, "Enter codename:");
                         }
                         buttonsPname[buttonIndex].setText(input);
                         handleCodeName(input, buttonIndex, buttonsPid);
@@ -203,8 +214,12 @@ public class laser {
                 public void actionPerformed(ActionEvent e) {
                     String input =  JOptionPane.showInputDialog(f, "Enter value:");
                     if (input != null && !input.isEmpty()) {
-                        while (input != null && !input.matches("-?\\d+")) {
+                        while (input != null && !input.matches("\\d+")) {
                             input = JOptionPane.showInputDialog(f, "Enter value:");
+                        }
+                        while(isIDUsed(input, usedIDs)){ //ID has already been used by another player
+                            JOptionPane.showMessageDialog(f, "Invalid! That player ID is already in use.", "Error", JOptionPane.ERROR_MESSAGE);
+                            input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                         }
                         buttonsBid[buttonIndex].setText(input);
                         handleID(input, buttonIndex, buttonsBname);
@@ -234,7 +249,7 @@ public class laser {
 
                     //String input =  JOptionPane.showInputDialog(f, "Enter value:");
                     if (input != null && !input.isEmpty()) {
-                        while (input != null && !input.matches("-?\\D+")) 
+                        while (input != null && !input.matches("[\\w]+")) 
                         {
                             input = JOptionPane.showInputDialog(f, "Enter name:");
                         }
@@ -265,7 +280,7 @@ public class laser {
             // Call the findPlayer method of databaseHandler here and pass 'playerID' as an argument
             try {
                 String codeName = databaseHandler.findPlayer(playerID);
-                if (codeName != null) {
+                if (codeName != null) { //if id already exists in the database
                     System.out.println("Blue Team Button " + buttonIndex + " Text: " + id);
                     System.out.println("codeName from database: " + codeName);
                     buttonsArray[buttonIndex].setText(codeName);
@@ -273,10 +288,14 @@ public class laser {
                     System.out.println("No match found in the database for playerID: " + playerID);
                     //check if code name has already been entered into the columns:
                     String checkInput = buttonsArray[buttonIndex].getText();
-                    if(checkInput!="Click to enter name"){
+                    if(checkInput!="Click to enter name" && checkInput!=null){
                         databaseHandler.savePlayerName(playerID, checkInput);
+                        System.out.println("value inserted to usedIDs: " + id);
                     }
                 }
+                usedIDs[counter] = id; //keep track of ids used for pink Team 
+                System.out.println("check value: " + usedIDs[counter]);
+                counter++;
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -292,7 +311,7 @@ public class laser {
         String IDstring = buttonsArray[buttonIndex].getText();
         System.out.println(IDstring);
         int playerID = -1;
-        if(!IDstring.matches("-?\\D+")){
+        if(!IDstring.matches(("\\d+")) && IDstring!=null && !isIDUsed(IDstring, usedIDs)){
             try{
                 playerID = Integer.parseInt(IDstring); //there is a valid ID corresponding to the codename
                 try{
@@ -309,18 +328,20 @@ public class laser {
         else{
             //do nothing, will add codename once ID has been entered
         }
-
-        //calling method in UDP client to run after codename is handled
-        
-         /* try
-        {
-            // client.initialize();
+    }
+    
+    public static boolean isIDUsed(String input, String[] idArray){
+        System.out.println("isUsed called");
+         // Iterate through the stringArray
+        for (String element : idArray) {
+            // Check if the current element is equal to the target string (case-sensitive comparison)
+            if (element.equals(input)) {
+                System.out.println("Checking comparing values: " + element + input);
+                return true;
+            }
         }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        } */
-    } 
+        return false;
+    }
 }
 
 class DatabaseHandler{

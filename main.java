@@ -15,7 +15,7 @@ public class main {
         //udp equipment entry
         try
         {
-            client.intialize();
+            client.initialize();
         }
         catch(IOException e)
         {
