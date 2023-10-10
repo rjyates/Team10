@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 public class actiondisplay {
 
@@ -12,9 +13,13 @@ public class actiondisplay {
         ((JPanel)frame.getContentPane()).setOpaque(true);
 
         //different border types
-        Border whiteline = BorderFactory.createLineBorder(Color.white);
+        Border greyline = BorderFactory.createLineBorder(Color.GRAY);
         Border pinkline = BorderFactory.createLineBorder(Color.magenta);
         Border blueline = BorderFactory.createLineBorder(Color.blue);
+        Border newline = BorderFactory.createTitledBorder("Current Action:");
+        //newline.setTitleFont(new Font("Georgia", Font.BOLD, 18));
+        ((TitledBorder) newline).setTitleFont(new Font("Georgia", Font.BOLD, 18));
+        ((TitledBorder) newline).setTitleColor(Color.GRAY);
         
        //initializing constraints
         GridBagConstraints c = new GridBagConstraints();
@@ -90,7 +95,7 @@ public class actiondisplay {
         frame.add(playersB, c);
 
 
-        
+
         //                  ACTION DISPLAY LABEL                //
         //action label
         c.gridx = 3; //  column
@@ -102,9 +107,10 @@ public class actiondisplay {
         c.fill = GridBagConstraints.BOTH;
 
         JLabel act = new JLabel("   ");
-        act.setBackground(Color.lightGray);
+        act.setBackground(Color.WHITE);
         act.setFont(new Font("Georgia", Font.PLAIN, 60));
-        act.setBorder(whiteline);
+        act.setBorder(newline);
+        //act.setBorder(greyline);
         act.setOpaque(true);
         frame.add(act, c);
 
