@@ -2,9 +2,9 @@ import java.io.IOException;
 
 public class main {
     public static void main(String[] args){
+        
         laser l = new laser();
         UDPServer server = new UDPServer();
-        //PlayerAction playAction = new PlayerAction(server);
         UDPClient client = new UDPClient();
 
         Thread serverthread = new Thread(server);
@@ -22,8 +22,16 @@ public class main {
             e.printStackTrace();
         }
 
-        //countdown
-        
-        //player action screen
+        if (l.runner == false){
+            //countdown here 
+            Start start = new Start();
+
+        }
+
+        if (start.runner == false){
+            //player action screen
+            PlayerAction play = new PlayerAction(server);
+
+        }
     }
 }
