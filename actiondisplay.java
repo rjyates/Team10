@@ -155,39 +155,39 @@ public class actiondisplay {
         //total score label:
         c.gridx = 0; //pink
         c.gridy+=1;
-        JLabel scoreLabelP = new JLabel("TOTAL: ");
+        JLabel scoreLabelP = new JLabel("TOTAL: ",  SwingConstants.CENTER);
         scoreLabelP.setForeground(Color.WHITE);
         scoreLabelP.setBackground(Color.BLACK);
-        scoreLabelP.setBorder(prCB);
-        scoreLabelP.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreLabelP.setBorder(plCB);
+        scoreLabelP.setFont(new Font("Georgia", Font.ITALIC, 16));
         scoreLabelP.setOpaque(true);
         frame.add(scoreLabelP, c);
 
         c.gridx = 7; //blue
-        JLabel scoreLabelB = new JLabel("TOTAL: ");
+        JLabel scoreLabelB = new JLabel("TOTAL: ",  SwingConstants.CENTER);
         scoreLabelB.setForeground(Color.WHITE);
         scoreLabelB.setBackground(Color.BLACK);
-        scoreLabelB.setBorder(prCB);
-        scoreLabelB.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreLabelB.setBorder(leftBB);
+        scoreLabelB.setFont(new Font("Georgia", Font.ITALIC, 16));
         scoreLabelB.setOpaque(true);
         frame.add(scoreLabelB, c);
 
         //total score value:
         c.gridx = 4; //pink
-        JLabel scoreValueP = new JLabel("0000");
+        JLabel scoreValueP = new JLabel("0000",  SwingConstants.CENTER);
         scoreValueP.setForeground(Color.WHITE);
         scoreValueP.setBackground(Color.BLACK);
-        scoreValueP.setBorder(prCB);
-        scoreValueP.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreValueP.setBorder(rightPB);
+        scoreValueP.setFont(new Font("Georgia", Font.ITALIC, 16));
         scoreValueP.setOpaque(true);
         frame.add(scoreValueP, c);
 
         c.gridx = 9; //blue
-        JLabel scoreValueB = new JLabel("0000");
+        JLabel scoreValueB = new JLabel("0000",  SwingConstants.CENTER);
         scoreValueB.setForeground(Color.WHITE);
         scoreValueB.setBackground(Color.BLACK);
-        scoreValueB.setBorder(prCB);
-        scoreValueB.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreValueB.setBorder(rightBB);
+        scoreValueB.setFont(new Font("Georgia", Font.ITALIC, 16));
         scoreValueB.setOpaque(true);
         frame.add(scoreValueB, c);
 
