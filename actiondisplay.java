@@ -6,6 +6,18 @@ import javax.swing.border.TitledBorder;
 
 public class actiondisplay {
 
+    private static String[] playerPNames;
+    private static String[] playerBNames;
+    private static String[] playerPScores;
+    private static String[] playerBScores;
+
+    public actiondisplay(String[] PlayerPNames, String[] PlayerBNames, String[] PlayerPScores, String[] playerBScores ) {
+        playerPNames = PlayerPNames;
+        playerBNames = PlayerBNames;
+        playerPScores = PlayerPScores;
+        playerBScores = PlayerBScores;
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Action Display");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,10 +86,10 @@ public class actiondisplay {
         frame.add(nameB, c);
         
 
-        // Player name labels
-        String[] playerPNames = {"Player 1", "Player 2", "player 3", "player 4", "player 5"};
-        String[] playerBNames = {"Player A", "Player B", "player c", "player d", "player e"};
-        String[] playerPScores = {"0000", "0001", "0002", "0003", "0004"};
+        // // Player name labels
+        // String[] playerPNames = {"Player 1", "Player 2", "player 3", "player 4", "player 5"};
+        // String[] playerBNames = {"Player A", "Player B", "player c", "player d", "player e"};
+        // String[] playerPScores = {"0000", "0001", "0002", "0003", "0004"};
  
         for (int i = 0; i < Math.max(playerPNames.length, playerBNames.length); i++) {
             // Pink player label
@@ -127,7 +139,7 @@ public class actiondisplay {
                 c.gridx = 9;
                 c.gridwidth=1;
                 //score
-                JLabel playerScoreB = new JLabel(playerPScores[i], SwingConstants.CENTER);
+                JLabel playerScoreB = new JLabel(playerBScores[i], SwingConstants.CENTER);
                 playerScoreB.setForeground(Color.WHITE);
                 playerScoreB.setBackground(Color.BLACK);
                 playerScoreB.setBorder(prCB);
@@ -136,38 +148,6 @@ public class actiondisplay {
                 frame.add(playerScoreB, c);
             }
         }
-
-
-        // //              PLAYER NAME LABELS                  //
-        // //pink player label
-        // c.gridx = 0; //  column
-        // c.gridy = 2; //  row
-        // c.gridwidth = 5;         
-        // c.gridheight = 5;
-        // c.gridheight = 10;
-        // c.weighty = 10.0;
-        // c.weightx = 10.0;
-        // c.fill = GridBagConstraints.BOTH;
-
-        // JLabel playersP = new JLabel("  ");
-        // playersP.setForeground(Color.WHITE);
-        // playersP.setBackground(Color.BLACK);
-        // playersP.setBorder(pinkline);
-        // playersP.setFont(new Font("Georgia", Font.PLAIN, 12));
-        // playersP.setOpaque(true);
-        // frame.add(playersP, c);
-
-        // //blue player label
-        // c.gridx = 5; //  column
-        // //same constraints as pink players label
-
-        // JLabel playersB = new JLabel("   ");
-        // playersB.setForeground(Color.white);
-        // playersB.setBackground(Color.black);
-        // playersB.setBorder(blueline);
-        // playersB.setFont(new Font("Georgia", Font.PLAIN, 12));
-        // playersB.setOpaque(true);
-        // frame.add(playersB, c);
 
          //action display label:
         c.gridx = 0;
