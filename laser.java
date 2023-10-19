@@ -19,17 +19,26 @@ public class laser {
     private static UDPClient client;
     private static UDPServer server;
 
+    //storing player Names
+    private static String[] playerPNames;
+    private static String[] playerBNames;
+    static int pCounter = 0;
+    static int bCounter = 0;
+
     //managing player ids: 
     static String[] usedIDs = new String[7];
     String defaultValue = "default";
     static int counter = 0;
 
 
-    public laser() {
+    public laser(String[] PlayerPNames, String[] PlayerBNames) {
         frame = new JFrame("Team Ten - light em up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1050, 669);
         frame.setLayout(new BorderLayout());
+
+        playerPNames = PlayerPNames;
+        playerBNames = PlayerBNames;
 
         backgroundLabel = new JLabel(new ImageIcon("logo.jpg"));
         frame.add(backgroundLabel, BorderLayout.CENTER);
@@ -186,7 +195,7 @@ public class laser {
                             input = JOptionPane.showInputDialog(f, "Enter codename:");
                         }
                         buttonsPname[buttonIndex].setText(input);
-                        handleCodeName(input, buttonIndex, buttonsPid);
+                        handleCodeName(input, buttonIndex, buttonsPid, pCounter);
                         
                     }
                 }
@@ -256,7 +265,7 @@ public class laser {
                         //buttonsBid[buttonIndex].setText(input);
                         //handleID(input, buttonIndex, buttonsBname);
                         buttonsBname[buttonIndex].setText(input);
-                        handleCodeName(input, buttonIndex, buttonsBid);
+                        handleCodeName(input, buttonIndex, buttonsBid, bCounter);
                     }
                     
                     //buttonsBname[buttonIndex].setText(input);
@@ -306,7 +315,7 @@ public class laser {
     }
 
 
-    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray){
+    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, int counter){
         String newCodeName = name;
         String IDstring = buttonsArray[buttonIndex].getText();
         System.out.println(IDstring);
@@ -316,6 +325,8 @@ public class laser {
                 playerID = Integer.parseInt(IDstring); //there is a valid ID corresponding to the codename
                 try{
                     databaseHandler.savePlayerName(playerID, newCodeName);
+                    playerPNames[counter] = newCodeName;
+                    counter++;
                 } catch (SQLException exception){
                     System.out.println(exception);
                 }

@@ -4,19 +4,22 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 
+//create global arrays in Main for: pink team players, pink team scores, blue team players, blue team scores
+//update arrays as names entered and scores change, pass to actiondisplay!
+
 public class actiondisplay {
 
-    private static String[] playerPNames;
-    private static String[] playerBNames;
-    private static String[] playerPScores;
-    private static String[] playerBScores;
+    // private static String[] playerPNames;
+    // private static String[] playerBNames;
+    // private static String[] playerPScores;
+    // private static String[] playerBScores;
 
-    public actiondisplay(String[] PlayerPNames, String[] PlayerBNames, String[] PlayerPScores, String[] playerBScores ) {
-        playerPNames = PlayerPNames;
-        playerBNames = PlayerBNames;
-        playerPScores = PlayerPScores;
-        playerBScores = PlayerBScores;
-    }
+    // public actiondisplay(String[] PlayerPNames, String[] PlayerBNames, String[] PlayerPScores, String[] PlayerBScores ) {
+    //     playerPNames = PlayerPNames;
+    //     playerBNames = PlayerBNames;
+    //     playerPScores = PlayerPScores;
+    //     playerBScores = PlayerBScores;
+    // }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Action Display");
@@ -84,12 +87,12 @@ public class actiondisplay {
         nameB.setBorder(blueline);
         nameB.setOpaque(true);
         frame.add(nameB, c);
-        
 
-        // // Player name labels
-        // String[] playerPNames = {"Player 1", "Player 2", "player 3", "player 4", "player 5"};
-        // String[] playerBNames = {"Player A", "Player B", "player c", "player d", "player e"};
-        // String[] playerPScores = {"0000", "0001", "0002", "0003", "0004"};
+         // Player name labels
+        String[] playerPNames = {"Player 1", "Player 2", "player 3", "player 4", "player 5"};
+        String[] playerBNames = {"Player A", "Player B", "player c", "player d", "player e"};
+        String[] playerPScores = {"0000", "0001", "0002", "0003", "0004"};
+        String[] playerBScores = {"0000", "0001", "0002", "0003", "0004"};
  
         for (int i = 0; i < Math.max(playerPNames.length, playerBNames.length); i++) {
             // Pink player label
@@ -148,10 +151,49 @@ public class actiondisplay {
                 frame.add(playerScoreB, c);
             }
         }
+        
+        //total score label:
+        c.gridx = 0; //pink
+        c.gridy+=1;
+        JLabel scoreLabelP = new JLabel("TOTAL: ");
+        scoreLabelP.setForeground(Color.WHITE);
+        scoreLabelP.setBackground(Color.BLACK);
+        scoreLabelP.setBorder(prCB);
+        scoreLabelP.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreLabelP.setOpaque(true);
+        frame.add(scoreLabelP, c);
+
+        c.gridx = 7; //blue
+        JLabel scoreLabelB = new JLabel("TOTAL: ");
+        scoreLabelB.setForeground(Color.WHITE);
+        scoreLabelB.setBackground(Color.BLACK);
+        scoreLabelB.setBorder(prCB);
+        scoreLabelB.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreLabelB.setOpaque(true);
+        frame.add(scoreLabelB, c);
+
+        //total score value:
+        c.gridx = 4; //pink
+        JLabel scoreValueP = new JLabel("0000");
+        scoreValueP.setForeground(Color.WHITE);
+        scoreValueP.setBackground(Color.BLACK);
+        scoreValueP.setBorder(prCB);
+        scoreValueP.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreValueP.setOpaque(true);
+        frame.add(scoreValueP, c);
+
+        c.gridx = 9; //blue
+        JLabel scoreValueB = new JLabel("0000");
+        scoreValueB.setForeground(Color.WHITE);
+        scoreValueB.setBackground(Color.BLACK);
+        scoreValueB.setBorder(prCB);
+        scoreValueB.setFont(new Font("Georgia", Font.PLAIN, 12));
+        scoreValueB.setOpaque(true);
+        frame.add(scoreValueB, c);
 
          //action display label:
         c.gridx = 0;
-        c.gridy = 1 + Math.max(playerPNames.length, playerBNames.length);
+        c.gridy = 2 + Math.max(playerPNames.length, playerBNames.length);
         c.gridwidth = 10;
         JLabel act = new JLabel(" ");
         act.setBackground(Color.WHITE);
