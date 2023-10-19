@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+
 public class actiondisplay {
 
     public static void main(String[] args) {
@@ -13,13 +14,24 @@ public class actiondisplay {
         ((JPanel)frame.getContentPane()).setOpaque(true);
 
         //different border types
-        // Border greyline = BorderFactory.createLineBorder(Color.GRAY);
         Border pinkline = BorderFactory.createLineBorder(Color.magenta);
         Border blueline = BorderFactory.createLineBorder(Color.blue);
         Border newline = BorderFactory.createTitledBorder("Current Action:");
-        //newline.setTitleFont(new Font("Georgia", Font.BOLD, 18));
         ((TitledBorder) newline).setTitleFont(new Font("Georgia", Font.BOLD, 18));
         ((TitledBorder) newline).setTitleColor(Color.GRAY);
+
+        Border leftPB = BorderFactory.createMatteBorder(0, 3, 0, 0, Color.MAGENTA);
+        Border rightPB = BorderFactory.createMatteBorder(0, 0, 0, 3, Color.MAGENTA);
+        Border leftBB = BorderFactory.createMatteBorder(0, 3, 0, 0, Color.BLUE);
+        Border rightBB = BorderFactory.createMatteBorder(0, 0, 0, 3, Color.BLUE);
+        Border TBB = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.gray);
+        
+        
+        Border plCB = BorderFactory.createCompoundBorder(TBB, TBB);
+        plCB = BorderFactory.createCompoundBorder(leftPB, plCB);
+        Border prCB = BorderFactory.createCompoundBorder(TBB, TBB);
+        prCB = BorderFactory.createCompoundBorder(rightBB, prCB);
+
         
        //initializing constraints
         GridBagConstraints c = new GridBagConstraints();
@@ -60,7 +72,7 @@ public class actiondisplay {
         nameB.setBorder(blueline);
         nameB.setOpaque(true);
         frame.add(nameB, c);
-
+        
 
         // Player name labels
         String[] playerPNames = {"Player 1", "Player 2", "player 3", "player 4", "player 5"};
@@ -76,10 +88,11 @@ public class actiondisplay {
                 c.weighty = 1.0;
 
                 //code name
-                JLabel playerLabelP = new JLabel(playerPNames[i]);
+                JLabel playerLabelP = new JLabel(playerPNames[i], SwingConstants.CENTER);
                 playerLabelP.setForeground(Color.WHITE);
                 playerLabelP.setBackground(Color.BLACK);
-                // playerLabelP.setBorder(pinkline);
+                //playerLabelP.setBorder(leftPB);
+                playerLabelP.setBorder(plCB);
                 playerLabelP.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerLabelP.setOpaque(true);
                 frame.add(playerLabelP, c);
@@ -87,10 +100,12 @@ public class actiondisplay {
                 c.gridx = 4;
                 c.gridwidth=1;
                 //score
-                JLabel playerScoreP = new JLabel(playerPScores[i]);
+                JLabel playerScoreP = new JLabel(playerPScores[i], SwingConstants.CENTER);
                 playerScoreP.setForeground(Color.WHITE);
                 playerScoreP.setBackground(Color.BLACK);
                 // playerScoreP.setBorder(pinkline);
+                playerScoreP.setBorder(rightPB);
+                //playerLabelP.setBorder(prCB);
                 playerScoreP.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerScoreP.setOpaque(true);
                 frame.add(playerScoreP, c);
@@ -98,23 +113,24 @@ public class actiondisplay {
 
             // Blue player label
             if (i < playerBNames.length) {
-                c.gridx = 5;
+                c.gridx = 7;
                 c.gridy=i+1;
-                JLabel playerLabelB = new JLabel(playerBNames[i]);
+                JLabel playerLabelB = new JLabel(playerBNames[i], SwingConstants.CENTER);
                 playerLabelB.setForeground(Color.WHITE);
                 playerLabelB.setBackground(Color.BLACK);
-                // playerLabelB.setBorder(blueline);
+                playerLabelB.setBorder(leftBB);
                 playerLabelB.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerLabelB.setOpaque(true);
                 frame.add(playerLabelB, c);
 
+
                 c.gridx = 9;
                 c.gridwidth=1;
                 //score
-                JLabel playerScoreB = new JLabel(playerPScores[i]);
+                JLabel playerScoreB = new JLabel(playerPScores[i], SwingConstants.CENTER);
                 playerScoreB.setForeground(Color.WHITE);
                 playerScoreB.setBackground(Color.BLACK);
-                // playerScoreB.setBorder(blueline);
+                playerScoreB.setBorder(prCB);
                 playerScoreB.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerScoreB.setOpaque(true);
                 frame.add(playerScoreB, c);
@@ -163,33 +179,15 @@ public class actiondisplay {
         act.setBorder(newline);
         act.setOpaque(true);
         frame.add(act, c);
-
-        // //                  ACTION DISPLAY LABEL                //
-        // //action label
-        // c.gridx = 3; //  column
-        // c.gridy = 16; //  row
-        // // c.gridy = 2 + playerPNames.length; // Adjust the row index
-        // c.gridwidth = 8;         
-        // c.gridheight = 10;
-        // c.weighty = 10.0;
-        // c.weightx = 10.0;
-        // c.fill = GridBagConstraints.BOTH;
-
-        // JLabel act = new JLabel("   ");
-        // act.setBackground(Color.WHITE);
-        // act.setFont(new Font("Georgia", Font.PLAIN, 60));
-        // act.setBorder(newline);
-        // // act.setBorder(greyline);
-        // act.setOpaque(true);
-        // frame.add(act, c);
-
-
+        
+    
 
         //                  general frame things                    ///
         frame.pack();
         
-        frame.setSize(500, 500);
+        frame.setSize(750, 750);
         frame.setBackground(Color.BLACK);
         frame.setVisible(true);
     }
+    
 }
