@@ -9,21 +9,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class laser {
-    private JFrame frame;
+    private static JFrame frame;
     private JLabel backgroundLabel;
+    Boolean isAlive = true;
+    boolean isRunning = false;
     // private JLabel tester;
     private Timer timer;
     private static DatabaseHandler databaseHandler;
     private static UDPClient client;
     private static UDPServer server;
-
-    //storing player Names
-    private static String[] playerPNames;
-    private static String[] playerBNames;
-    static int pCounter = 0;
-    static int bCounter = 0;
 
     //managing player ids: 
     static String[] usedIDs = new String[7];
@@ -31,14 +29,11 @@ public class laser {
     static int counter = 0;
 
 
-    public laser(String[] PlayerPNames, String[] PlayerBNames) {
+    public laser() {
         frame = new JFrame("Team Ten - light em up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1050, 669);
         frame.setLayout(new BorderLayout());
-
-        playerPNames = PlayerPNames;
-        playerBNames = PlayerBNames;
 
         backgroundLabel = new JLabel(new ImageIcon("logo.jpg"));
         frame.add(backgroundLabel, BorderLayout.CENTER);
@@ -55,6 +50,26 @@ public class laser {
                 backgroundLabel.setBackground(Color.BLACK);
                 timer.stop(); // Stop the timer after switching the background
                 createAndShowPlayerEntry(frame);
+            }
+        });
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Not used in this example
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+                    System.out.println("YAY");
+                    isAlive = false;
+                    closeFrame();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Not used in this example
             }
         });
 
@@ -195,7 +210,7 @@ public class laser {
                             input = JOptionPane.showInputDialog(f, "Enter codename:");
                         }
                         buttonsPname[buttonIndex].setText(input);
-                        handleCodeName(input, buttonIndex, buttonsPid, pCounter);
+                        handleCodeName(input, buttonIndex, buttonsPid);
                         
                     }
                 }
@@ -265,7 +280,7 @@ public class laser {
                         //buttonsBid[buttonIndex].setText(input);
                         //handleID(input, buttonIndex, buttonsBname);
                         buttonsBname[buttonIndex].setText(input);
-                        handleCodeName(input, buttonIndex, buttonsBid, bCounter);
+                        handleCodeName(input, buttonIndex, buttonsBid);
                     }
                     
                     //buttonsBname[buttonIndex].setText(input);
@@ -315,7 +330,7 @@ public class laser {
     }
 
 
-    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, int counter){
+    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray){
         String newCodeName = name;
         String IDstring = buttonsArray[buttonIndex].getText();
         System.out.println(IDstring);
@@ -325,8 +340,6 @@ public class laser {
                 playerID = Integer.parseInt(IDstring); //there is a valid ID corresponding to the codename
                 try{
                     databaseHandler.savePlayerName(playerID, newCodeName);
-                    playerPNames[counter] = newCodeName;
-                    counter++;
                 } catch (SQLException exception){
                     System.out.println(exception);
                 }
@@ -352,6 +365,14 @@ public class laser {
             }
         }
         return false;
+    }
+    private void closeFrame() {
+        isRunning = false;
+        frame.getContentPane().removeAll();
+        // frame.dispose();
+        frame.repaint();
+        frame.revalidate();
+        countdown c = new countdown(frame);
     }
 }
 
@@ -406,4 +427,5 @@ class DatabaseHandler{
         }
              
     }
+    
 }
