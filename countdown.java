@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 
 
 public class countdown {
-    private JFrame frame;
+    private static JFrame frame;
     //private JLabel zero;
-    
     private Timer timer;
+    actiondisplay a;
     private int count;
     private String[] imageNames = {
         "zero.png", "one.png", "two.png", "three.png", "four.png", 
@@ -23,9 +23,10 @@ public class countdown {
     private String imagePath = "count-images/";
     private JLabel currentLabel;
 
-    public countdown() {
-       
-        frame = new JFrame("start game count down");
+    public countdown(JFrame Frame) {
+        frame = Frame;
+       System.out.println("starting countdown");
+        // frame = new JFrame("start game count down");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(750, 750);
         frame.setLayout(new BorderLayout());
@@ -44,7 +45,14 @@ public class countdown {
 
                     if(count == -1){
                         //System.out.println("close");
-                        frame.dispose();
+                        // actiondisplay ad = new actiondisplay();
+                        // frame.getContentPane().removeAll();
+                        // frame.repaint();
+                        // frame.revalidate();
+                        // a = new actiondisplay(frame);
+                        startAction();
+                        timer.stop();
+
                     }
                     else{
                         addNewLabelWithIcon(imagePath + imageNames[count]);
@@ -71,6 +79,14 @@ public class countdown {
         frame.repaint(); // Repaint the frame to reflect the changes
     }
 
+    private void startAction(){
+            // frame.removeAll();
+            frame.repaint();
+            frame.revalidate();
+            a = new actiondisplay(frame);
+
+    }
+
     public void display() {
         frame.setVisible(true);
     }
@@ -81,7 +97,7 @@ public class countdown {
             //public void run() { new start(); }
             @Override
             public void run() {
-                countdown example = new countdown();
+                countdown example = new countdown(frame);
                 example.display();
                 
                 }
