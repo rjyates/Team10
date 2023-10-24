@@ -23,12 +23,6 @@ public class laser {
     private static UDPClient client;
     private static UDPServer server;
 
-    //storing player Names
-    private static String[] playerPNames;
-    private static String[] playerBNames;
-    static int pCounter = 0;
-    static int bCounter = 0;
-
     //managing player ids: 
     static String[] usedIDs = new String[7];
     String defaultValue = "default";
@@ -38,7 +32,7 @@ public class laser {
     public laser() {
         frame = new JFrame("Team Ten - light em up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1050, 669);
+        frame.setSize(1050, 700);
         frame.setLayout(new BorderLayout());
 
         backgroundLabel = new JLabel(new ImageIcon("logo.jpg"));
@@ -70,6 +64,11 @@ public class laser {
                     System.out.println("YAY");
                     isAlive = false;
                     closeFrame();
+                }
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
+                    System.out.println("close");
+                    isAlive = true;
+                    clearFrame();
                 }
             }
 
@@ -108,8 +107,9 @@ public class laser {
     }
 
     private static void createAndShowPlayerEntry(JFrame f) {
+        frame = f;
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(1050, 669);
+        f.setSize(1050, 700);
         f.setLayout(null); // Use null layout for custom button placement
         f.getContentPane().setBackground(Color.BLACK);
 
@@ -216,7 +216,7 @@ public class laser {
                             input = JOptionPane.showInputDialog(f, "Enter codename:");
                         }
                         buttonsPname[buttonIndex].setText(input);
-                        handleCodeName(input, buttonIndex, buttonsPid, playerPNames, pCounter);
+                        handleCodeName(input, buttonIndex, buttonsPid);
                         
                     }
                 }
@@ -286,7 +286,7 @@ public class laser {
                         //buttonsBid[buttonIndex].setText(input);
                         //handleID(input, buttonIndex, buttonsBname);
                         buttonsBname[buttonIndex].setText(input);
-                        handleCodeName(input, buttonIndex, buttonsBid, playerBNames, bCounter);
+                        handleCodeName(input, buttonIndex, buttonsBid);
                     }
                     
                     //buttonsBname[buttonIndex].setText(input);
@@ -296,6 +296,22 @@ public class laser {
             buttonsBname[i] = button; // Store the button in the array
             f.add(button);
         }
+
+        //how to navigate to other screens
+        JButton closing = new JButton("Start = Esc");
+        closing.setBounds(1, 640 , 100, 30);
+        closing.setBackground(Color.WHITE);
+        //closing.set
+        closing.setFont(new Font("Georgia", Font.PLAIN, 13));
+        f.add(closing); 
+
+        JButton clear = new JButton("Clear = Ctrl");
+        clear.setBounds(950, 640 , 100, 30);
+        clear.setBackground(Color.WHITE);
+        //closing.set
+        clear.setFont(new Font("Georgia", Font.PLAIN, 13));
+        f.add(clear); 
+
 
         f.setVisible(true);
     }
@@ -336,7 +352,7 @@ public class laser {
     }
 
 
-    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, String[] playerNames, int nameCounter){
+    public static void handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray){
         String newCodeName = name;
         String IDstring = buttonsArray[buttonIndex].getText();
         System.out.println(IDstring);
@@ -346,8 +362,6 @@ public class laser {
                 playerID = Integer.parseInt(IDstring); //there is a valid ID corresponding to the codename
                 try{
                     databaseHandler.savePlayerName(playerID, newCodeName);
-                    playerNames[counter] = newCodeName;
-                    counter++;
                 } catch (SQLException exception){
                     System.out.println(exception);
                 }
@@ -380,8 +394,20 @@ public class laser {
         // frame.dispose();
         frame.repaint();
         frame.revalidate();
-        countdown c = new countdown(frame, playerPNames, playerBNames);
+        countdown c = new countdown(frame);
     }
+
+    private void clearFrame() {
+        isRunning = true;
+        frame.getContentPane().removeAll();
+    
+        frame.repaint();
+        frame.revalidate();
+        createAndShowPlayerEntry(frame);
+        System.out.println("clearing out");
+        //countdown c = new countdown(frame);
+    }
+    
 }
 
 class DatabaseHandler{
