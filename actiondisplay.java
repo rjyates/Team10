@@ -5,8 +5,12 @@ import javax.swing.border.TitledBorder;
 
 public class actiondisplay {
         private static JFrame frame;
-    public actiondisplay(JFrame Frame) {
+        private static String[] playerPNames; 
+        private static String[] playerBNames;
+    public actiondisplay(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames) {
         frame = Frame;
+        playerPNames = PlayerPNames;
+        playerBNames = PlayerBNames;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.BLACK);
@@ -63,9 +67,8 @@ public class actiondisplay {
 
 
         // Player name labels
-        String[] playerPNames = {"Player 1", "Player 2", "player 3", "player 4", "player 5"};
-        String[] playerBNames = {"Player A", "Player B", "player c", "player d", "player e"};
         String[] playerPScores = {"0000", "0001", "0002", "0003", "0004"};
+        String[] playerBScores = {"1000", "1001", "1002", "1003", "1004"};
  
         for (int i = 0; i < Math.max(playerPNames.length, playerBNames.length); i++) {
             // Pink player label
@@ -111,7 +114,7 @@ public class actiondisplay {
                 c.gridx = 9;
                 c.gridwidth=1;
                 //score
-                JLabel playerScoreB = new JLabel(playerPScores[i]);
+                JLabel playerScoreB = new JLabel(playerBScores[i]);
                 playerScoreB.setForeground(Color.WHITE);
                 playerScoreB.setBackground(Color.BLACK);
                 // playerScoreB.setBorder(blueline);
@@ -201,7 +204,7 @@ public class actiondisplay {
             //public void run() { new start(); }
             @Override
             public void run() {
-                actiondisplay example = new actiondisplay(frame);
+                actiondisplay example = new actiondisplay(frame, playerPNames, playerBNames);
                 example.display();
                 
                 }

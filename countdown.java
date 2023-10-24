@@ -19,12 +19,17 @@ public class countdown {
         "21.png", "22.png", "23.png", "24.png", "25.png", 
         "26.png", "27.png", "28.png", "29.png", "30.png"
     };
+
+    private static String[] playerPNames; 
+    private static String[] playerBNames;
     
     private String imagePath = "count-images/";
     private JLabel currentLabel;
 
-    public countdown(JFrame Frame) {
+    public countdown(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames) {
         frame = Frame;
+        playerPNames = PlayerPNames;
+        playerBNames = PlayerBNames;
        System.out.println("starting countdown");
         // frame = new JFrame("start game count down");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +88,7 @@ public class countdown {
             // frame.removeAll();
             frame.repaint();
             frame.revalidate();
-            a = new actiondisplay(frame);
+            a = new actiondisplay(frame, playerPNames, playerBNames);
 
     }
 
@@ -97,7 +102,7 @@ public class countdown {
             //public void run() { new start(); }
             @Override
             public void run() {
-                countdown example = new countdown(frame);
+                countdown example = new countdown(frame, playerPNames, playerBNames);
                 example.display();
                 
                 }

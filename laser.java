@@ -24,8 +24,8 @@ public class laser {
     private static UDPServer server;
 
     //storing player Names
-    //private static String[] playerPNames;
-    //private static String[] playerBNames;
+    private static String[] playerPNames;
+    private static String[] playerBNames;
     static int pCounter = 0;
     static int bCounter = 0;
 
@@ -380,7 +380,7 @@ public class laser {
         // frame.dispose();
         frame.repaint();
         frame.revalidate();
-        countdown c = new countdown(frame);
+        countdown c = new countdown(frame, playerPNames, playerBNames);
     }
 }
 
