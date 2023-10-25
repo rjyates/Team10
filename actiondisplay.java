@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Arrays;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -11,6 +13,8 @@ public class actiondisplay {
         frame = Frame;
         playerPNames = PlayerPNames;
         playerBNames = PlayerBNames;
+        System.out.println("PLAYER P NAME ARRAY: " + Arrays.toString(PlayerPNames));
+        System.out.println("PLAYER B NAME ARRAY: " + Arrays.toString(PlayerBNames));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.BLACK);
@@ -77,8 +81,8 @@ public class actiondisplay {
         frame.add(nameB, c);
 
         // Player name labels
-        String[] playerPScores = {"0000", "0001", "0002", "0003", "0004"};
-        String[] playerBScores = {"1000", "1001", "1002", "1003", "1004"};
+        String[] playerPScores = {"0000", "0001", "0002", "0003", "0004", "0005","0007"};
+        String[] playerBScores = {"1000", "1001", "1002", "1003", "1004", "1005", "1006"};
  
         for (int i = 0; i < Math.max(playerPNames.length, playerBNames.length); i++) {
             // Pink player label

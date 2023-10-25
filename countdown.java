@@ -88,6 +88,12 @@ public class countdown {
             // frame.removeAll();
             frame.repaint();
             frame.revalidate();
+            for(int i=0;i<7;i++){
+                System.out.println("Pink: " + i + playerPNames[i]);
+            }
+            for(int i=0;i<7;i++){
+                System.out.println("Blue " + i + playerBNames[i]);
+            }
             a = new actiondisplay(frame, playerPNames, playerBNames);
 
     }
@@ -104,7 +110,6 @@ public class countdown {
             public void run() {
                 countdown example = new countdown(frame, playerPNames, playerBNames);
                 example.display();
-                
                 }
             });
     }
