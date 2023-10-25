@@ -35,11 +35,11 @@
         static int counter = 0;
 
 
-        public laser() {
-            frame = new JFrame("Team Ten - light em up");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1050, 669);
-            frame.setLayout(new BorderLayout());
+    public laser() {
+        frame = new JFrame("Team Ten - light em up");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1050, 700);
+        frame.setLayout(new BorderLayout());
 
             playerPNames = new String[7];
             playerBNames = new String[7];
@@ -70,10 +70,22 @@
             frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "escapePressed");
             frame.getRootPane().getActionMap().put("escapePressed", new AbstractAction() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Escape key pressed");
-                isAlive = false;
-                closeFrame();
+            public void keyPressed(KeyEvent e) {
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+                    System.out.println("YAY");
+                    isAlive = false;
+                    closeFrame();
+                }
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
+                    System.out.println("close");
+                    isAlive = true;
+                    clearFrame();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Not used in this example
             }
             });
 
@@ -105,11 +117,12 @@
             }
         }
 
-        private static void createAndShowPlayerEntry(JFrame f) {
-            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            f.setSize(1050, 669);
-            f.setLayout(null); // Use null layout for custom button placement
-            f.getContentPane().setBackground(Color.BLACK);
+    private static void createAndShowPlayerEntry(JFrame f) {
+        frame = f;
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(1050, 700);
+        f.setLayout(null); // Use null layout for custom button placement
+        f.getContentPane().setBackground(Color.BLACK);
 
 
             // pink team title
@@ -288,9 +301,25 @@
                     }
                 });
 
-                buttonsBname[i] = button; // Store the button in the array
-                f.add(button);
-            }
+            buttonsBname[i] = button; // Store the button in the array
+            f.add(button);
+        }
+
+        //how to navigate to other screens
+        JButton closing = new JButton("Start = Esc");
+        closing.setBounds(1, 640 , 100, 30);
+        closing.setBackground(Color.WHITE);
+        //closing.set
+        closing.setFont(new Font("Georgia", Font.PLAIN, 13));
+        f.add(closing); 
+
+        JButton clear = new JButton("Clear = Ctrl");
+        clear.setBounds(950, 640 , 100, 30);
+        clear.setBackground(Color.WHITE);
+        //closing.set
+        clear.setFont(new Font("Georgia", Font.PLAIN, 13));
+        f.add(clear); 
+
 
             f.setVisible(true);
         }
