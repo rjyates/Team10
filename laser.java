@@ -64,29 +64,26 @@
                     createAndShowPlayerEntry(frame);
                 }
             });
-            
             int escapeKey = KeyEvent.VK_ESCAPE;
             KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(escapeKey, 0, false);
             frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "escapePressed");
             frame.getRootPane().getActionMap().put("escapePressed", new AbstractAction() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-                    System.out.println("YAY");
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Escape key pressed");
                     isAlive = false;
                     closeFrame();
                 }
-                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_C) {
-                    System.out.println("close");
-                    isAlive = true;
-                    clearFrame();
+            });
+    
+                    int ctrlKey = KeyEvent.VK_CONTROL;
+            KeyStroke ctrlKeyStroke = KeyStroke.getKeyStroke(ctrlKey, 0, false);
+            frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlKeyStroke, "ctrlPressed");
+            frame.getRootPane().getActionMap().put("ctrlPressed", new AbstractAction() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Ctrl key pressed");
+                    // Call your function here
+                    // clearFrame();
                 }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                // Not used in this example
-            }
             });
 
             timer.setRepeats(false); // Set the timer to run only once
