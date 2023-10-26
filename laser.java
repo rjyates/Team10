@@ -11,6 +11,7 @@
     import java.io.IOException;
     import java.awt.event.KeyEvent;
     import java.awt.event.KeyListener;
+    import java.awt.event.InputEvent;
 
     public class laser {
         private static JFrame frame;
