@@ -82,7 +82,7 @@
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Ctrl key pressed");
                     // Call your function here
-                    // clearFrame();
+                    clearFrame();
                 }
             });
 
@@ -410,6 +410,17 @@
             frame.repaint();
             frame.revalidate();
             countdown c = new countdown(frame, playerPNames, playerBNames);
+        }
+        
+        private void clearFrame() {
+        isRunning = true;
+        frame.getContentPane().removeAll();
+    
+        frame.repaint();
+        frame.revalidate();
+        createAndShowPlayerEntry(frame);
+        System.out.println("clearing out");
+        //countdown c = new countdown(frame);
         }
     }
 
