@@ -38,7 +38,7 @@ public class countdown {
         frame.setBackground(Color.BLACK);
 
 
-        count = 5;
+        count = 30;
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
