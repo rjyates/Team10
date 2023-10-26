@@ -39,7 +39,7 @@
     public laser() {
         frame = new JFrame("Team Ten - light em up");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1050, 700);
+        frame.setSize(1050, 669);
         frame.setLayout(new BorderLayout());
 
             playerPNames = new String[7];
