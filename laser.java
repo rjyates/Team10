@@ -75,13 +75,13 @@
                 }
             });
     
-                    int ctrlKey = KeyEvent.VK_CONTROL;
-            KeyStroke ctrlKeyStroke = KeyStroke.getKeyStroke(ctrlKey, 0, false);
+            int ctrlKey = KeyEvent.VK_CONTROL;
+            KeyStroke ctrlKeyStroke = KeyStroke.getKeyStroke(ctrlKey, Event.CTRL_MASK, false);
             frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlKeyStroke, "ctrlPressed");
             frame.getRootPane().getActionMap().put("ctrlPressed", new AbstractAction() {
+                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Ctrl key pressed");
-                    // Call your function here
                     clearFrame();
                 }
             });
