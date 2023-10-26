@@ -413,14 +413,12 @@
         }
         
         private void clearFrame() {
-        isRunning = true;
-        frame.getContentPane().removeAll();
-    
-        frame.repaint();
-        frame.revalidate();
-        createAndShowPlayerEntry(frame);
-        System.out.println("clearing out");
-        //countdown c = new countdown(frame);
+            frame.getContentPane().removeAll();
+        
+            frame.repaint();
+            frame.revalidate();
+            createAndShowPlayerEntry(frame);
+            System.out.println("clearing out"); 
         }
     }
 
