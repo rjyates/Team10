@@ -22,14 +22,17 @@ public class countdown {
 
     private static String[] playerPNames; 
     private static String[] playerBNames;
-    
+    private static Player[] pinkTeam; 
+    private static Player[] blueTeam;
     private String imagePath = "count-images/";
     private JLabel currentLabel;
 
-    public countdown(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames) {
+    public countdown(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames, Player[] PinkTeam, Player[] BlueTeam) {
         frame = Frame;
         playerPNames = PlayerPNames;
         playerBNames = PlayerBNames;
+        pinkTeam = PinkTeam;
+        blueTeam = BlueTeam;
        System.out.println("starting countdown");
         // frame = new JFrame("start game count down");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,7 +97,7 @@ public class countdown {
             for(int i=0;i<7;i++){
                 System.out.println("Blue " + i + playerBNames[i]);
             }
-            a = new actiondisplay(frame, playerPNames, playerBNames);
+            a = new actiondisplay(frame, playerPNames, playerBNames, pinkTeam, blueTeam);
 
     }
 
@@ -108,7 +111,7 @@ public class countdown {
             //public void run() { new start(); }
             @Override
             public void run() {
-                countdown example = new countdown(frame, playerPNames, playerBNames);
+                countdown example = new countdown(frame, playerPNames, playerBNames, pinkTeam, blueTeam);
                 example.display();
                 }
             });

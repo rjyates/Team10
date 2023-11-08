@@ -9,10 +9,14 @@ public class actiondisplay {
         private static JFrame frame;
         private static String[] playerPNames; 
         private static String[] playerBNames;
-    public actiondisplay(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames) {
+        private static Player[] pinkTeam;
+        private static Player[] blueTeam;
+    public actiondisplay(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames, Player[] PinkTeam, Player[] BlueTeam) {
         frame = Frame;
         playerPNames = PlayerPNames;
         playerBNames = PlayerBNames;
+        pinkTeam=PinkTeam;
+        blueTeam=BlueTeam;
         System.out.println("PLAYER P NAME ARRAY: " + Arrays.toString(PlayerPNames));
         System.out.println("PLAYER B NAME ARRAY: " + Arrays.toString(PlayerBNames));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,7 +109,19 @@ public class actiondisplay {
                 c.gridx = 4;
                 c.gridwidth=1;
                 //score
-                JLabel playerScoreP = new JLabel(playerPScores[i], SwingConstants.CENTER);
+                // JLabel playerScoreP = new JLabel(playerPScores[i], SwingConstants.CENTER);
+                // playerScoreP.setForeground(Color.WHITE);
+                // playerScoreP.setBackground(Color.BLACK);
+                // // playerScoreP.setBorder(pinkline);
+                // playerScoreP.setBorder(rightPB);
+                // //playerLabelP.setBorder(prCB);
+                // playerScoreP.setFont(new Font("Georgia", Font.PLAIN, 12));
+                // playerScoreP.setOpaque(true);
+                // frame.add(playerScoreP, c);
+
+                //score
+                String playerScore = String.valueOf(pinkTeam[i].getScore());
+                JLabel playerScoreP = new JLabel(playerScore, SwingConstants.CENTER);
                 playerScoreP.setForeground(Color.WHITE);
                 playerScoreP.setBackground(Color.BLACK);
                 // playerScoreP.setBorder(pinkline);
@@ -113,6 +129,8 @@ public class actiondisplay {
                 //playerLabelP.setBorder(prCB);
                 playerScoreP.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerScoreP.setOpaque(true);
+
+                pinkTeam[i].setScoreLabel(playerScoreP); //store score label in the Player object
                 frame.add(playerScoreP, c);
             }
 
@@ -132,12 +150,15 @@ public class actiondisplay {
                 c.gridx = 9;
                 c.gridwidth=1;
                 //score
-                JLabel playerScoreB = new JLabel(playerBScores[i], SwingConstants.CENTER);
+                String playerScore = String.valueOf(blueTeam[i].getScore());
+                JLabel playerScoreB = new JLabel(playerScore, SwingConstants.CENTER);
                 playerScoreB.setForeground(Color.WHITE);
                 playerScoreB.setBackground(Color.BLACK);
                 playerScoreB.setBorder(prCB);
                 playerScoreB.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerScoreB.setOpaque(true);
+
+                blueTeam[i].setScoreLabel(playerScoreB); //store score label in the Player object
                 frame.add(playerScoreB, c);
             }
         }
@@ -210,7 +231,7 @@ public class actiondisplay {
             //public void run() { new start(); }
             @Override
             public void run() {
-                actiondisplay example = new actiondisplay(frame, playerPNames, playerBNames);
+                actiondisplay example = new actiondisplay(frame, playerPNames, playerBNames, pinkTeam, blueTeam);
                 example.display();
                 
                 }

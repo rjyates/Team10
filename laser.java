@@ -13,6 +13,61 @@
     import java.awt.event.KeyListener;
     import java.awt.event.InputEvent;
 
+
+class Player {
+    private String team;
+    private String codeName;
+    private int score;
+    private int equipmentID;
+    private JLabel scoreLabel;
+
+    public Player(String team, String codeName, int score, int equipmentID) {
+        this.team = team;
+        this.codeName = codeName;
+        this.score = score;
+        this.equipmentID = equipmentID;
+        this.scoreLabel = new JLabel(Integer.toString(score));
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public String getCodeName() {
+        return codeName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getEquipmentID() {
+        return equipmentID;
+    }
+
+    public JLabel getScoreLabel() {
+        return scoreLabel;
+    }
+    public void setScoreLabel(JLabel newLabel){
+        this.scoreLabel = newLabel;
+    }
+    public void setScore(int newScore) {
+        this.score += newScore;
+        scoreLabel.setText(Integer.toString(this.score));
+    }
+
+    public void setCodeName(String codename){
+        this.codeName = codename;
+    }
+
+    public void setEquipmentID(int newEquipmentID) {
+        this.equipmentID = newEquipmentID;
+    }
+
+
+}
+
+
     public class laser {
         private static JFrame frame;
         private JLabel backgroundLabel;
@@ -29,6 +84,9 @@
         private static String[] playerBNames;
         static int pCounter = 0;
         static int bCounter = 0;
+
+        private static Player[] pinkTeam = new Player[7];
+        private static Player[] blueTeam = new Player[7];
 
         //managing player ids: 
         static String[] usedIDs = new String[14];
@@ -48,6 +106,16 @@
                 playerPNames[i] = "x";
                 playerBNames[i] = "y";
             }
+
+            // Initialize Pink Team and Blue Team arrays with default Player objects
+            for (int i = 0; i < pinkTeam.length; i++) {
+                pinkTeam[i] = new Player("Pink", "default", 0, -1); // You can set default values here
+            }
+
+            for (int i = 0; i < blueTeam.length; i++) {
+                blueTeam[i] = new Player("Blue", "default", 0, -1); // You can set default values here
+            }
+
             backgroundLabel = new JLabel(new ImageIcon("logo.jpg"));
             frame.add(backgroundLabel, BorderLayout.CENTER);
 
@@ -192,7 +260,7 @@
                                 input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                             }
                             buttonsPid[buttonIndex].setText(input);
-                            pCounter = handleID(input, buttonIndex, buttonsPname, playerPNames, pCounter);
+                            pCounter = handleID(input, buttonIndex, buttonsPname, playerPNames, pinkTeam, pCounter);
                         }
                     }
                 });
@@ -225,7 +293,7 @@
                                 input = JOptionPane.showInputDialog(f, "Enter codename:");
                             }
                             buttonsPname[buttonIndex].setText(input);
-                            pCounter = handleCodeName(input, buttonIndex, buttonsPid, playerPNames, pCounter);
+                            pCounter = handleCodeName(input, buttonIndex, buttonsPid, playerPNames, pinkTeam, pCounter);
                         }
                     }
                 });
@@ -260,7 +328,7 @@
                                 input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                             }
                             buttonsBid[buttonIndex].setText(input);
-                            bCounter = handleID(input, buttonIndex, buttonsBname, playerBNames, bCounter);
+                            bCounter = handleID(input, buttonIndex, buttonsBname, playerBNames, blueTeam, bCounter);
                         }
                     }
                 });
@@ -292,7 +360,7 @@
                                 input = JOptionPane.showInputDialog(f, "Enter name:");
                             }
                             buttonsBname[buttonIndex].setText(input);
-                            bCounter = handleCodeName(input, buttonIndex, buttonsBid, playerBNames, bCounter);
+                            bCounter = handleCodeName(input, buttonIndex, buttonsBid, playerBNames, blueTeam, bCounter);
                         }
                         
                         //buttonsBname[buttonIndex].setText(input);
@@ -301,7 +369,20 @@
 
             buttonsBname[i] = button; // Store the button in the array
             f.add(button);
-        }
+            }
+            System.out.println("Printing pink team: ");
+            for (Player player : pinkTeam) {
+                if (player != null) {
+                    System.out.println("CodeName: " + player.getCodeName() + ", Score: " + player.getScore());
+                }
+            }
+            System.out.println("Printing Blue team: ");
+            for (Player player : blueTeam) {
+                if (player != null) {
+                    System.out.println("CodeName: " + player.getCodeName() + ", Score: " + player.getScore());
+                }
+            }
+
 
         //how to navigate to other screens
         JButton closing = new JButton("Start = Esc");
@@ -325,7 +406,7 @@
         //when ID entered: check for existing, if not -> check for Code name, if yes -> enter into database
         //when codename entered: check for id -> enter into database, if not, enter when ID entered
 
-        public static int handleID(String id, final int buttonIndex, JButton[] buttonsArray, String[] playerName, int nameCounter){
+        public static int handleID(String id, final int buttonIndex, JButton[] buttonsArray, String[] playerName, Player[] team, int nameCounter){
             try{
                 int playerID = Integer.parseInt(id); // Convert 'id' to an integer
 
@@ -335,11 +416,12 @@
                     if (codeName != null) { //if id already exists in the database
                         System.out.println("codeName from database: " + codeName);
                         playerName[nameCounter] = codeName;
-                        System.out.println("PLAYER NAME ADDED: " + playerName[nameCounter]);
+                        team[nameCounter].setCodeName(codeName);
+                        team[nameCounter].setScore(0);
+                        System.out.println("Inside array: " + team[nameCounter].getCodeName() + team[nameCounter].getScore());
                         buttonsArray[buttonIndex].setText(codeName);
                         nameCounter++;
                         usedIDs[counter] = id; //keep track of ids used for pink Team 
-                        System.out.println("check value: " + usedIDs[counter]);
                         counter++;
                     } else {
                         System.out.println("No match found in the database for playerID: " + playerID);
@@ -347,7 +429,9 @@
                         String checkInput = buttonsArray[buttonIndex].getText();
                         if(checkInput!="Click to enter name" && checkInput!=null){
                             databaseHandler.savePlayerName(playerID, checkInput);
-                            System.out.println("value inserted to usedIDs: " + id);
+                            team[nameCounter].setCodeName(checkInput);
+                            team[nameCounter].setScore(0);
+                            System.out.println("Inside array: " + team[nameCounter].getCodeName() + team[nameCounter].getScore());
                         }
                     }
                 } catch (SQLException ex) {
@@ -361,7 +445,7 @@
         }
 
 
-        public static int handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, String[] playerNames, int nameCounter){
+        public static int handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, String[] playerNames, Player[] team, int nameCounter){
             String newCodeName = name;
             String IDstring = buttonsArray[buttonIndex].getText();
             System.out.println(IDstring);
@@ -371,7 +455,9 @@
                     playerID = Integer.parseInt(IDstring); //there is a valid ID corresponding to the codename
                     try{
                         playerNames[nameCounter] = newCodeName;
-                        System.out.println("PLAYER NAME ADDED HANDLECODE: " + playerNames[nameCounter]);
+                        team[nameCounter].setCodeName(newCodeName);
+                        team[nameCounter].setScore(0);
+                        System.out.println("Inside array: " + team[nameCounter].getCodeName() + team[nameCounter].getScore());
                         nameCounter++;
                         databaseHandler.savePlayerName(playerID, newCodeName);
                     } catch (SQLException exception){
@@ -410,7 +496,7 @@
             // frame.dispose();
             frame.repaint();
             frame.revalidate();
-            countdown c = new countdown(frame, playerPNames, playerBNames);
+            countdown c = new countdown(frame, playerPNames, playerBNames, pinkTeam, blueTeam);
         }
         
         private void clearFrame() {
