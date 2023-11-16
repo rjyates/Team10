@@ -5,80 +5,51 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-public class UDPServer implements Runnable {
-	public ArrayList<Integer> Shoot = new ArrayList<>();
-	public ArrayList<Integer> Hit = new ArrayList<>();
-	DatagramSocket rec, brd;
-
-	
-	public void run() 
-    {
-		try 
-        {
-			rec = new DatagramSocket(7501);
-			brd = new DatagramSocket(7500);
-		} 
-        catch (IOException e) 
-        {
-			e.printStackTrace();
-		}
-		
-
+public class UDP implements Runnable {
+    public ArrayList <Integer> Shoot = new ArrayList();
+    public ArrayList <Integer> Hit = new ArrayList();
+    DatagramSocket rec, brd;
+    
+    public UDP() {
+        try {
+            rec = new DatagramSocket(7500);
+            brd = new DatagramSocket();
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+    
+    public void broadcast(byte[] bytes) {
+        try {
+            brd.send(new DatagramPacket(
+                bytes, bytes.length,
+                InetAddress.getLoopbackAddress(), 7501));
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+    public void broadcast(String s) { broadcast(s.getBytes()); }
+    
+    public void run() {
         byte[] receive = new byte[65535];
         DatagramPacket DpReceive = null;
 
-        while (true) 
-        {
+        while (true) {
             DpReceive = new DatagramPacket(receive, receive.length);
 
-            try 
-            {
+            try {
                 rec.receive(DpReceive);
-            } 
-            catch (IOException e) 
-            {
-                e.printStackTrace();
-            }
+            } catch (IOException e) { e.printStackTrace(); }
+            
+            String message = new String(receive).trim();
+            System.out.println("Client says: " + message);
+            System.out.println(message.length());
 
-
-            System.out.println("Client:-" + data(receive));
-            String message = data(receive).toString();
+		//if message = base then handle
+            
             String[] playerIds = message.split("\\:");
-            int idOfPlayerShooting = Integer.parseInt(playerIds[0]);
-            int idOfPlayerHit = Integer.parseInt(playerIds[1]);
-            Shoot.add(idOfPlayerShooting);
-            Hit.add(idOfPlayerHit);
+            System.out.println(playerIds[0] +" "+ playerIds[1] +" "+ playerIds[1].length());
+            Shoot.add(Integer.parseInt(playerIds[0]));
+            Hit  .add(Integer.parseInt(playerIds[1]));
 
-            try 
-            {
-                // Broadcast player hit
-                brd.send(
-                    new DatagramPacket(
-                        new byte[]{(byte) idOfPlayerHit},
-                        1));
-            } 
-            catch (IOException e) 
-            {
-                e.printStackTrace();
-            }	
+            broadcast(playerIds[1]);
             receive = new byte[65535];
         }
     }
-
-	public static StringBuilder data(byte[] a) 
-    {
-		if (a == null)
-        {
-			return null;
-        }
-		StringBuilder ret = new StringBuilder();
-		int i = 0;
-		while (a[i] != 0) 
-        {
-			ret.append((char) a[i]);
-			i++;
-		}
-		return ret;
-	}
 }
-
