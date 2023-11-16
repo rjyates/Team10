@@ -1,3 +1,5 @@
+//this file should be deleted because traffic generator will act as client
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
