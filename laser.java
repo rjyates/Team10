@@ -260,7 +260,7 @@ class Player {
                                 input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                             }
                             buttonsPid[buttonIndex].setText(input);
-                            pCounter = handleID(input, buttonIndex, buttonsPname, playerPNames, pinkTeam, pCounter);
+                            pCounter = handleID(input, buttonIndex, buttonsPname, playerPNames, pinkTeam, pCounter, f);
                         }
                     }
                 });
@@ -270,7 +270,6 @@ class Player {
                 f.add(button);
             }
 
-            //pink codenames
             // pink codenames
             for (int i = 0; i < buttonLocationsPname.length; i++) {
                 int[] location = buttonLocationsPname[i];
@@ -294,6 +293,16 @@ class Player {
                             }
                             buttonsPname[buttonIndex].setText(input);
                             pCounter = handleCodeName(input, buttonIndex, buttonsPid, playerPNames, pinkTeam, pCounter);
+                            System.out.println("Done with codename");
+                            String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                            if (equipmentID != null && !equipmentID.isEmpty()) {
+                                while (equipmentID != null && !equipmentID.matches("[\\w]+")) 
+                                {
+                                    equipmentID = JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                                }
+                                int equipmentIDInt = Integer.parseInt(equipmentID);
+                                pinkTeam[pCounter].setEquipmentID(equipmentIDInt);
+                            }
                         }
                     }
                 });
@@ -328,7 +337,7 @@ class Player {
                                 input = JOptionPane.showInputDialog(f, "Enter player ID (integer only):");
                             }
                             buttonsBid[buttonIndex].setText(input);
-                            bCounter = handleID(input, buttonIndex, buttonsBname, playerBNames, blueTeam, bCounter);
+                            bCounter = handleID(input, buttonIndex, buttonsBname, playerBNames, blueTeam, bCounter, f);
                         }
                     }
                 });
@@ -353,7 +362,6 @@ class Player {
                     public void actionPerformed(ActionEvent e) {
                         String input =  JOptionPane.showInputDialog(f, "Enter name:");
 
-                        //String input =  JOptionPane.showInputDialog(f, "Enter value:");
                         if (input != null && !input.isEmpty()) {
                             while (input != null && !input.matches("[\\w]+")) 
                             {
@@ -361,6 +369,16 @@ class Player {
                             }
                             buttonsBname[buttonIndex].setText(input);
                             bCounter = handleCodeName(input, buttonIndex, buttonsBid, playerBNames, blueTeam, bCounter);
+
+                            String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                            if (equipmentID != null && !equipmentID.isEmpty()) {
+                                while (equipmentID != null && !equipmentID.matches("[\\w]+")) 
+                                {
+                                    equipmentID = JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                                }
+                                int equipmentIDInt = Integer.parseInt(equipmentID);
+                                blueTeam[bCounter].setEquipmentID(equipmentIDInt);
+                            }
                         }
                         
                         //buttonsBname[buttonIndex].setText(input);
@@ -369,18 +387,6 @@ class Player {
 
             buttonsBname[i] = button; // Store the button in the array
             f.add(button);
-            }
-            System.out.println("Printing pink team: ");
-            for (Player player : pinkTeam) {
-                if (player != null) {
-                    System.out.println("CodeName: " + player.getCodeName() + ", Score: " + player.getScore());
-                }
-            }
-            System.out.println("Printing Blue team: ");
-            for (Player player : blueTeam) {
-                if (player != null) {
-                    System.out.println("CodeName: " + player.getCodeName() + ", Score: " + player.getScore());
-                }
             }
 
 
@@ -406,7 +412,7 @@ class Player {
         //when ID entered: check for existing, if not -> check for Code name, if yes -> enter into database
         //when codename entered: check for id -> enter into database, if not, enter when ID entered
 
-        public static int handleID(String id, final int buttonIndex, JButton[] buttonsArray, String[] playerName, Player[] team, int nameCounter){
+        public static int handleID(String id, final int buttonIndex, JButton[] buttonsArray, String[] playerName, Player[] team, int nameCounter, JFrame f){
             try{
                 int playerID = Integer.parseInt(id); // Convert 'id' to an integer
 
@@ -423,6 +429,16 @@ class Player {
                         nameCounter++;
                         usedIDs[counter] = id; //keep track of ids used for pink Team 
                         counter++;
+                        String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                        if (equipmentID != null && !equipmentID.isEmpty()) {
+                            while (equipmentID != null && !equipmentID.matches("[\\w]+")) 
+                            {
+                                equipmentID = JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                            }
+                            System.out.println("Equipment ID: " + equipmentID);
+                        }
+                        int equipmentIDInt = Integer.parseInt(equipmentID);
+                        team[nameCounter].setEquipmentID(equipmentIDInt);
                     } else {
                         System.out.println("No match found in the database for playerID: " + playerID);
                         //check if code name has already been entered into the columns:
@@ -431,7 +447,7 @@ class Player {
                             databaseHandler.savePlayerName(playerID, checkInput);
                             team[nameCounter].setCodeName(checkInput);
                             team[nameCounter].setScore(0);
-                            System.out.println("Inside array: " + team[nameCounter].getCodeName() + team[nameCounter].getScore());
+                            // System.out.println("Inside array: " + team[nameCounter].getCodeName() + team[nameCounter].getScore());
                         }
                     }
                 } catch (SQLException ex) {
