@@ -1,50 +1,53 @@
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
+import javazoom.jl.decoder.Bitstream;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public class actiondisplay {
-        private static JFrame frame;
-        private static String[] playerPNames; 
-        private static String[] playerBNames;
-        private static Player[] pinkTeam;
-        private static Player[] blueTeam;
-    public actiondisplay(JFrame Frame, String[] PlayerPNames, String[] PlayerBNames, Player[] PinkTeam, Player[] BlueTeam) {
+    UDP communicator;
+    static JFrame frame;
+    static Player[] pinkTeam;
+    static Player[] blueTeam;
+    
+    public actiondisplay(JFrame Frame, Player[] pinkTeam, Player[] blueTeam) {
+        pinkTeam = pinkTeam;
+        blueTeam = blueTeam;
         frame = Frame;
-        playerPNames = PlayerPNames;
-        playerBNames = PlayerBNames;
-        pinkTeam=PinkTeam;
-        blueTeam=BlueTeam;
-        System.out.println("PLAYER P NAME ARRAY: " + Arrays.toString(PlayerPNames));
-        System.out.println("PLAYER B NAME ARRAY: " + Arrays.toString(PlayerBNames));
+        
+        communicator = new UDP();
+        (new Thread(communicator)).start();
+        communicator.broadcast("202");
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.BLACK);
         ((JPanel)frame.getContentPane()).setOpaque(true);
 
-        //different border types
         Border pinkline = BorderFactory.createLineBorder(Color.magenta);
         Border blueline = BorderFactory.createLineBorder(Color.blue);
         Border newline = BorderFactory.createTitledBorder("Current Action:");
         ((TitledBorder) newline).setTitleFont(new Font("Georgia", Font.BOLD, 18));
         ((TitledBorder) newline).setTitleColor(Color.GRAY);
 
-        Border leftPB = BorderFactory.createMatteBorder(0, 3, 0, 0, Color.MAGENTA);
+        Border leftPB  = BorderFactory.createMatteBorder(0, 3, 0, 0, Color.MAGENTA);
         Border rightPB = BorderFactory.createMatteBorder(0, 0, 0, 3, Color.MAGENTA);
-        Border leftBB = BorderFactory.createMatteBorder(0, 3, 0, 0, Color.BLUE);
+        Border leftBB  = BorderFactory.createMatteBorder(0, 3, 0, 0, Color.BLUE);
         Border rightBB = BorderFactory.createMatteBorder(0, 0, 0, 3, Color.BLUE);
-        Border TBB = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.gray);
+        Border TBB     = BorderFactory.createMatteBorder(0, 0, 0, 0, Color.gray);
         
+        Border plCB = BorderFactory.createCompoundBorder(leftPB , BorderFactory.createCompoundBorder(TBB, TBB));
+        Border prCB = BorderFactory.createCompoundBorder(rightBB, BorderFactory.createCompoundBorder(TBB, TBB));
         
-        Border plCB = BorderFactory.createCompoundBorder(TBB, TBB);
-        plCB = BorderFactory.createCompoundBorder(leftPB, plCB);
-        Border prCB = BorderFactory.createCompoundBorder(TBB, TBB);
-        prCB = BorderFactory.createCompoundBorder(rightBB, prCB);
-
-        
-       //initializing constraints
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0; // Column index
         c.gridy = 0; // Row index
@@ -53,7 +56,6 @@ public class actiondisplay {
         c.fill = GridBagConstraints.BOTH; // Resize the component both horizontally and vertically
         c.weightx = 1.0; // Resize behavior - take up extra horizontal space
         c.weighty = 1.0; // Resize behavior - take up extra vertical space
-
 
 
         //              TEAM NAME LABELS                //
@@ -85,60 +87,47 @@ public class actiondisplay {
         frame.add(nameB, c);
 
         // Player name labels
-        String[] playerPScores = {"0000", "0001", "0002", "0003", "0004", "0005","0007"};
-        String[] playerBScores = {"1000", "1001", "1002", "1003", "1004", "1005", "1006"};
+        //String[] playerPScores = {"0000", "0001", "0002", "0003", "0004", "0005","0007"};
+        //String[] playerBScores = {"1000", "1001", "1002", "1003", "1004", "1005", "1006"};
  
-        for (int i = 0; i < Math.max(playerPNames.length, playerBNames.length); i++) {
+        for (int i = 0; i < Math.max(pinkTeam.length, blueTeam.length); i++) {
             // Pink player label
-            if (i < playerPNames.length) {
+            if (i < pinkTeam.length) {
                 c.gridwidth = 4;
                 c.gridx = 0;
                 c.gridy = i+1;
                 c.weighty = 1.0;
 
                 //code name
-                JLabel playerLabelP = new JLabel(playerPNames[i], SwingConstants.CENTER);
+                JLabel playerLabelP = new JLabel(pinkTeam[i].name, SwingConstants.CENTER);
                 playerLabelP.setForeground(Color.WHITE);
                 playerLabelP.setBackground(Color.BLACK);
-                //playerLabelP.setBorder(leftPB);
                 playerLabelP.setBorder(plCB);
                 playerLabelP.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerLabelP.setOpaque(true);
                 frame.add(playerLabelP, c);
 
                 c.gridx = 4;
-                c.gridwidth=1;
-                //score
-                // JLabel playerScoreP = new JLabel(playerPScores[i], SwingConstants.CENTER);
-                // playerScoreP.setForeground(Color.WHITE);
-                // playerScoreP.setBackground(Color.BLACK);
-                // // playerScoreP.setBorder(pinkline);
-                // playerScoreP.setBorder(rightPB);
-                // //playerLabelP.setBorder(prCB);
-                // playerScoreP.setFont(new Font("Georgia", Font.PLAIN, 12));
-                // playerScoreP.setOpaque(true);
-                // frame.add(playerScoreP, c);
+                c.gridwidth = 1;
 
                 //score
-                String playerScore = String.valueOf(pinkTeam[i].getScore());
+                String playerScore = String.valueOf(pinkTeam[i].score);
                 JLabel playerScoreP = new JLabel(playerScore, SwingConstants.CENTER);
                 playerScoreP.setForeground(Color.WHITE);
                 playerScoreP.setBackground(Color.BLACK);
-                // playerScoreP.setBorder(pinkline);
                 playerScoreP.setBorder(rightPB);
-                //playerLabelP.setBorder(prCB);
                 playerScoreP.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerScoreP.setOpaque(true);
 
-                pinkTeam[i].setScoreLabel(playerScoreP); //store score label in the Player object
+                pinkTeam[i].label = playerScoreP; //store score label in the Player object
                 frame.add(playerScoreP, c);
             }
 
             // Blue player label
-            if (i < playerBNames.length) {
+            if (i < blueTeam.length) {
                 c.gridx = 7;
                 c.gridy=i+1;
-                JLabel playerLabelB = new JLabel(playerBNames[i], SwingConstants.CENTER);
+                JLabel playerLabelB = new JLabel(blueTeam[i].name, SwingConstants.CENTER);
                 playerLabelB.setForeground(Color.WHITE);
                 playerLabelB.setBackground(Color.BLACK);
                 playerLabelB.setBorder(leftBB);
@@ -146,11 +135,10 @@ public class actiondisplay {
                 playerLabelB.setOpaque(true);
                 frame.add(playerLabelB, c);
 
-
                 c.gridx = 9;
                 c.gridwidth=1;
                 //score
-                String playerScore = String.valueOf(blueTeam[i].getScore());
+                String playerScore = String.valueOf(blueTeam[i].score);
                 JLabel playerScoreB = new JLabel(playerScore, SwingConstants.CENTER);
                 playerScoreB.setForeground(Color.WHITE);
                 playerScoreB.setBackground(Color.BLACK);
@@ -158,12 +146,11 @@ public class actiondisplay {
                 playerScoreB.setFont(new Font("Georgia", Font.PLAIN, 12));
                 playerScoreB.setOpaque(true);
 
-                blueTeam[i].setScoreLabel(playerScoreB); //store score label in the Player object
+                blueTeam[i].label = playerScoreB; //store score label in the Player object
                 frame.add(playerScoreB, c);
             }
         }
         
-        //total score label:
         c.gridx = 0; //pink
         c.gridy+=1;
         JLabel scoreLabelP = new JLabel("TOTAL: ",  SwingConstants.CENTER);
@@ -183,7 +170,6 @@ public class actiondisplay {
         scoreLabelB.setOpaque(true);
         frame.add(scoreLabelB, c);
 
-        //total score value:
         c.gridx = 4; //pink
         JLabel scoreValueP = new JLabel("0000",  SwingConstants.CENTER);
         scoreValueP.setForeground(Color.WHITE);
@@ -202,9 +188,8 @@ public class actiondisplay {
         scoreValueB.setOpaque(true);
         frame.add(scoreValueB, c);
 
-         //action display label:
         c.gridx = 0;
-        c.gridy = 2 + Math.max(playerPNames.length, playerBNames.length);
+        c.gridy = 2 + Math.max(pinkTeam.length, blueTeam.length);
         c.gridwidth = 10;
         JLabel act = new JLabel(" ");
         act.setBackground(Color.WHITE);
@@ -213,28 +198,66 @@ public class actiondisplay {
         act.setOpaque(true);
         frame.add(act, c);
         
-    
-
-        //                  general frame things                    ///
         frame.pack();
-        
         frame.setSize(750, 750);
         frame.setBackground(Color.BLACK);
         frame.setVisible(true);
+
+        playMusic("gamemusic.mp3", 6);
     }
 
     public void display() {
         frame.setVisible(true);
+
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            //public void run() { new start(); }
-            @Override
-            public void run() {
-                actiondisplay example = new actiondisplay(frame, playerPNames, playerBNames, pinkTeam, blueTeam);
-                example.display();
-                
+    
+    public void playMusic(String musicFilePath, int targetDurationMinutes) {
+        Thread musicThread = new Thread(() -> {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(musicFilePath);
+                Bitstream bitstream = new Bitstream(fileInputStream);
+                int durationSeconds = bitstream.readFrame().max_number_of_frames((int) fileInputStream.getChannel().size());
+
+                FileInputStream fis = new FileInputStream(musicFilePath);
+                AdvancedPlayer player = new AdvancedPlayer(fis);
+
+                // Optional: Add a playback listener to handle events
+                player.setPlayBackListener(new PlaybackListener() {
+                    @Override
+                    public void playbackFinished(PlaybackEvent evt) {
+                        System.out.println("Playback finished");
+                    }
+                });
+
+                // Calculate the total duration for looping
+                int targetDurationSeconds = targetDurationMinutes * 60;
+
+                // Calculate the number of full loops and the remaining duration for the partial loop
+                int fullLoopCount = targetDurationSeconds / durationSeconds;
+                int remainingDuration = targetDurationSeconds % durationSeconds;
+
+                // Play the music in full loops
+                for (int i = 0; i < fullLoopCount; i++) {
+                    player.play();
+                    // Delay for the duration of the played music
+                    Thread.sleep(durationSeconds * 1000);
+                    // Reset the player to the beginning of the stream for the next loop
+                    fis.getChannel().position(0);
                 }
-            });
+
+                // If there is a remaining duration, play the music for the remaining duration
+                if (remainingDuration > 0) {
+                    player.play();
+                    // Delay for the remaining duration
+                    Thread.sleep(remainingDuration * 1000);
+                }
+            } catch (JavaLayerException | IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        musicThread.start();
     }
+
+
 }
