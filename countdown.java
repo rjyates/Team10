@@ -23,7 +23,7 @@ public class countdown {
         frame.setLayout(new BorderLayout());
         frame.setBackground(Color.BLACK);
 
-        count = 2;
+        count = 30;
         timer = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (currentLabel != null) frame.remove(currentLabel);
