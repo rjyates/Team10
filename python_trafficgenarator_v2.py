@@ -60,8 +60,17 @@ while True:
 	received_data = received_data.decode('utf-8')
 	print 'Received from game software: ', received_data
 	print ('')
+
+	if received_data == '43':
+		#blue team base hit, give 100 pts to player on pink
+		continue
+
+	if received_data == '53':
+		#pink team base hit, give 100 pts to player on blue
+		continue
+	
 	if received_data == '221':
-		break;
+		break
 	time.sleep(random.randint(1,3))
 	
 print("program complete")
