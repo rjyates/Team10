@@ -9,6 +9,7 @@ public class UDP implements Runnable {
     public ArrayList <Integer> Shoot = new ArrayList();
     public ArrayList <Integer> Hit = new ArrayList();
     DatagramSocket rec, brd;
+    actiondisplay ad;
     
     public UDP() {
         try {
@@ -45,6 +46,7 @@ public class UDP implements Runnable {
             System.out.println(playerIds[0] +" "+ playerIds[1] +" "+ playerIds[1].length());
             Shoot.add(Integer.parseInt(playerIds[0]));
             Hit  .add(Integer.parseInt(playerIds[1]));
+            ad.processShot(playerIds[0], playerIds[1]);
 
             broadcast(playerIds[1]);
             receive = new byte[65535];
