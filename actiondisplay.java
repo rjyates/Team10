@@ -23,8 +23,8 @@ public class actiondisplay {
     static JLabel scoreValueP;
     
     public actiondisplay(JFrame Frame, Player[] pinkTeam, Player[] blueTeam) {
-        pinkTeam = pinkTeam;
-        blueTeam = blueTeam;
+        this.pinkTeam = pinkTeam;
+        this.blueTeam = blueTeam;
         frame = Frame;
         
         communicator = new UDP();
@@ -102,7 +102,7 @@ public class actiondisplay {
                 c.weighty = 1.0;
 
                 //code name
-                JLabel playerLabelP = new JLabel(pinkTeam[i].name, SwingConstants.CENTER);
+                JLabel playerLabelP = new JLabel(pinkTeam[i].codeName, SwingConstants.CENTER);
                 playerLabelP.setForeground(Color.WHITE);
                 playerLabelP.setBackground(Color.BLACK);
                 playerLabelP.setBorder(plCB);
@@ -130,7 +130,7 @@ public class actiondisplay {
             if (i < blueTeam.length) {
                 c.gridx = 7;
                 c.gridy=i+1;
-                JLabel playerLabelB = new JLabel(blueTeam[i].name, SwingConstants.CENTER);
+                JLabel playerLabelB = new JLabel(blueTeam[i].codeName, SwingConstants.CENTER);
                 playerLabelB.setForeground(Color.WHITE);
                 playerLabelB.setBackground(Color.BLACK);
                 playerLabelB.setBorder(leftBB);
@@ -289,9 +289,9 @@ public class actiondisplay {
             // Check if shootID matches pinkTeam[i].equipmentID
             if (shootID.equals(pinkTeam[i].equipmentID)) {
                 // Increment the score by 10
-                pinkTeam[i].scoreLabel += 10;
+                pinkTeam[i].score += 10;
                 // Update the score label (assuming it's a JLabel)
-                pinkTeam[i].label.setText(String.valueOf(pinkTeam[i].scoreLabel));
+                pinkTeam[i].label.setText(String.valueOf(pinkTeam[i].score));
             }
             // Check if hitID matches pinkTeam[i].codeName
             if (hitID.equals(pinkTeam[i].codeName)) {
@@ -304,9 +304,9 @@ public class actiondisplay {
             // Check if shootID matches blueTeam[i].equipmentID
             if (shootID.equals(blueTeam[i].equipmentID)) {
                 // Increment the score by 10
-                blueTeam[i].scoreLabel += 10;
+                blueTeam[i].score += 10;
                 // Update the score label (assuming it's a JLabel)
-                blueTeam[i].label.setText(String.valueOf(blueTeam[i].scoreLabel));
+                blueTeam[i].label.setText(String.valueOf(blueTeam[i].score));
             }
             // Check if hitID matches blueTeam[i].codeName
             if (hitID.equals(blueTeam[i].codeName)) {
