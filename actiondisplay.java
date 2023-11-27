@@ -20,6 +20,7 @@ public class actiondisplay {
     static Player[] blueTeam;
 
     static JLabel scoreValueB;
+    static JLabel scoreValueP;
     
     public actiondisplay(JFrame Frame, Player[] pinkTeam, Player[] blueTeam) {
         pinkTeam = pinkTeam;
@@ -173,7 +174,7 @@ public class actiondisplay {
         frame.add(scoreLabelB, c);
 
         c.gridx = 4; //pink
-        JLabel scoreValueP = new JLabel("0000",  SwingConstants.CENTER);
+        scoreValueP = new JLabel("0000",  SwingConstants.CENTER);
         scoreValueP.setForeground(Color.WHITE);
         scoreValueP.setBackground(Color.BLACK);
         scoreValueP.setBorder(rightPB);
@@ -208,7 +209,7 @@ public class actiondisplay {
         playMusic("gamemusic.mp3", 6);
     }
 
-    public void addScoreToBlueTeam() {
+    public void addHitforBlue() {
         // Get the current score value from the JLabel
         String currentScoreValue = scoreValueB.getText();
 
@@ -223,6 +224,57 @@ public class actiondisplay {
 
         // Update the JLabel with the new score
         scoreValueB.setText(newScoreValue);
+    }
+
+    public void addBaseHitforBlue() {
+        // Get the current score value from the JLabel
+        String currentScoreValue = scoreValueB.getText();
+
+        // Convert the current score value to an integer
+        int currentScore = Integer.parseInt(currentScoreValue);
+
+        // Add 10 to the score
+        int newScore = currentScore + 100;
+
+        // Convert the new score back to a string
+        String newScoreValue = String.format("%04d", newScore);
+
+        // Update the JLabel with the new score
+        scoreValueB.setText(newScoreValue);
+    }
+
+    public void addHitforPink() {
+        // Get the current score value from the JLabel
+        String currentScoreValue = scoreValueP.getText();
+
+        // Convert the current score value to an integer
+        int currentScore = Integer.parseInt(currentScoreValue);
+
+        // Add 10 to the score
+        int newScore = currentScore + 10;
+
+        // Convert the new score back to a string
+        String newScoreValue = String.format("%04d", newScore);
+
+        // Update the JLabel with the new score
+        scoreValueP.setText(newScoreValue);
+    }
+
+    public void addBaseHitforPink() {
+        // Get the current score value from the JLabel
+        String currentScoreValue = scoreValueP.getText();
+
+        // Convert the current score value to an integer
+        int currentScore = Integer.parseInt(currentScoreValue);
+
+        // Add 10 to the score
+        int newScore = currentScore + 100;
+
+        // Convert the new score back to a string
+        String newScoreValue = String.format("%04d", newScore);
+
+        // Update the JLabel with the new score
+        scoreValueP.setText(newScoreValue);
     }
 
     public void display() {
