@@ -4,11 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javazoom.jl.decoder.Bitstream;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
+// import javazoom.jl.decoder.Bitstream;
+// import javazoom.jl.decoder.JavaLayerException;
+// import javazoom.jl.player.advanced.AdvancedPlayer;
+// import javazoom.jl.player.advanced.PlaybackEvent;
+// import javazoom.jl.player.advanced.PlaybackListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -206,7 +206,7 @@ public class actiondisplay {
         frame.setBackground(Color.BLACK);
         frame.setVisible(true);
 
-        playMusic("gamemusic.mp3", 6);
+        //playMusic("gamemusic.mp3", 6);
     }
 
     public void addHitforBlue() {
@@ -316,53 +316,53 @@ public class actiondisplay {
         }
     }
     
-    public void playMusic(String musicFilePath, int targetDurationMinutes) {
-        Thread musicThread = new Thread(() -> {
-            try {
-                FileInputStream fileInputStream = new FileInputStream(musicFilePath);
-                Bitstream bitstream = new Bitstream(fileInputStream);
-                int durationSeconds = bitstream.readFrame().max_number_of_frames((int) fileInputStream.getChannel().size());
+    // public void playMusic(String musicFilePath, int targetDurationMinutes) {
+    //     Thread musicThread = new Thread(() -> {
+    //         try {
+    //             FileInputStream fileInputStream = new FileInputStream(musicFilePath);
+    //             Bitstream bitstream = new Bitstream(fileInputStream);
+    //             int durationSeconds = bitstream.readFrame().max_number_of_frames((int) fileInputStream.getChannel().size());
 
-                FileInputStream fis = new FileInputStream(musicFilePath);
-                AdvancedPlayer player = new AdvancedPlayer(fis);
+    //             FileInputStream fis = new FileInputStream(musicFilePath);
+    //             AdvancedPlayer player = new AdvancedPlayer(fis);
 
-                // Optional: Add a playback listener to handle events
-                player.setPlayBackListener(new PlaybackListener() {
-                    @Override
-                    public void playbackFinished(PlaybackEvent evt) {
-                        System.out.println("Playback finished");
-                    }
-                });
+    //             // Optional: Add a playback listener to handle events
+    //             player.setPlayBackListener(new PlaybackListener() {
+    //                 @Override
+    //                 public void playbackFinished(PlaybackEvent evt) {
+    //                     System.out.println("Playback finished");
+    //                 }
+    //             });
 
-                // Calculate the total duration for looping
-                int targetDurationSeconds = targetDurationMinutes * 60;
+    //             // Calculate the total duration for looping
+    //             int targetDurationSeconds = targetDurationMinutes * 60;
 
-                // Calculate the number of full loops and the remaining duration for the partial loop
-                int fullLoopCount = targetDurationSeconds / durationSeconds;
-                int remainingDuration = targetDurationSeconds % durationSeconds;
+    //             // Calculate the number of full loops and the remaining duration for the partial loop
+    //             int fullLoopCount = targetDurationSeconds / durationSeconds;
+    //             int remainingDuration = targetDurationSeconds % durationSeconds;
 
-                // Play the music in full loops
-                for (int i = 0; i < fullLoopCount; i++) {
-                    player.play();
-                    // Delay for the duration of the played music
-                    Thread.sleep(durationSeconds * 1000);
-                    // Reset the player to the beginning of the stream for the next loop
-                    fis.getChannel().position(0);
-                }
+    //             // Play the music in full loops
+    //             for (int i = 0; i < fullLoopCount; i++) {
+    //                 player.play();
+    //                 // Delay for the duration of the played music
+    //                 Thread.sleep(durationSeconds * 1000);
+    //                 // Reset the player to the beginning of the stream for the next loop
+    //                 fis.getChannel().position(0);
+    //             }
 
-                // If there is a remaining duration, play the music for the remaining duration
-                if (remainingDuration > 0) {
-                    player.play();
-                    // Delay for the remaining duration
-                    Thread.sleep(remainingDuration * 1000);
-                }
-            } catch (JavaLayerException | IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+    //             // If there is a remaining duration, play the music for the remaining duration
+    //             if (remainingDuration > 0) {
+    //                 player.play();
+    //                 // Delay for the remaining duration
+    //                 Thread.sleep(remainingDuration * 1000);
+    //             }
+    //         } catch (JavaLayerException | IOException | InterruptedException e) {
+    //             e.printStackTrace();
+    //         }
+    //     });
 
-        musicThread.start();
-    }
+    //     musicThread.start();
+    // }
 
 
 }
