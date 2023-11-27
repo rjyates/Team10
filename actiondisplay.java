@@ -281,6 +281,40 @@ public class actiondisplay {
         frame.setVisible(true);
 
     }
+         public static void processShot(String shootID, String hitID) {
+        System.out.println("successfully called");
+        System.out.println(shootID + "shot" + hitID);
+      
+        for (int i = 0; i < pinkTeam.length; i++) {
+            // Check if shootID matches pinkTeam[i].equipmentID
+            if (shootID.equals(pinkTeam[i].equipmentID)) {
+                // Increment the score by 10
+                pinkTeam[i].scoreLabel += 10;
+                // Update the score label (assuming it's a JLabel)
+                pinkTeam[i].label.setText(String.valueOf(pinkTeam[i].scoreLabel));
+            }
+            // Check if hitID matches pinkTeam[i].codeName
+            if (hitID.equals(pinkTeam[i].codeName)) {
+                // Perform any action for a hit on pinkTeam
+                // (e.g., update health, display a message, etc.)
+            }
+        }
+
+        for (int i = 0; i < blueTeam.length; i++) {
+            // Check if shootID matches blueTeam[i].equipmentID
+            if (shootID.equals(blueTeam[i].equipmentID)) {
+                // Increment the score by 10
+                blueTeam[i].scoreLabel += 10;
+                // Update the score label (assuming it's a JLabel)
+                blueTeam[i].label.setText(String.valueOf(blueTeam[i].scoreLabel));
+            }
+            // Check if hitID matches blueTeam[i].codeName
+            if (hitID.equals(blueTeam[i].codeName)) {
+                // Perform any action for a hit on blueTeam
+                // (e.g., update health, display a message, etc.)
+            }
+        }
+    }
     
     public void playMusic(String musicFilePath, int targetDurationMinutes) {
         Thread musicThread = new Thread(() -> {
