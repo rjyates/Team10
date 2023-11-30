@@ -78,6 +78,7 @@ public class laser {
     Boolean isAlive = true;
     boolean isRunning = false;
     private Timer timer;
+    private Timer gametimer;
     private static DatabaseHandler databaseHandler;
 
     //storing player Names
@@ -86,8 +87,8 @@ public class laser {
     static int pCounter = 0;
     static int bCounter = 0;
 
-    private static Player[] pinkTeam = new Player[7];
-    private static Player[] blueTeam = new Player[7];
+    private static Player[] pinkTeam = new Player[2];
+    private static Player[] blueTeam = new Player[2];
 
     //managing player ids: 
     static String[] usedIDs = new String[14];
@@ -133,6 +134,8 @@ public class laser {
                 createAndShowPlayerEntry(frame);
             }
         });
+
+
         int escapeKey = KeyEvent.VK_ESCAPE;
         KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(escapeKey, 0, false);
         frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "escapePressed");
@@ -254,7 +257,6 @@ public class laser {
                 }
             });
             
-
             buttonsPid[i] = button; // Store the button in the array
             f.add(button);
         }
@@ -281,17 +283,9 @@ public class laser {
                             input = JOptionPane.showInputDialog(f, "Enter codename:");
                         }
                         buttonsPname[buttonIndex].setText(input);
-                        pCounter = handleCodeName(input, buttonIndex, buttonsPid, playerPNames, pinkTeam, pCounter);
+                        pCounter = handleCodeName(input, buttonIndex, buttonsPid, playerPNames, pinkTeam, pCounter, f);
                         System.out.println("Done with codename");
-                        String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
-                        if (equipmentID != null && !equipmentID.isEmpty()) {
-                            while (equipmentID != null && !equipmentID.matches("[\\w]+")) 
-                            {
-                                equipmentID = JOptionPane.showInputDialog(f, "Enter equipment ID:");
-                            }
-                            int equipmentIDInt = Integer.parseInt(equipmentID);
-                            pinkTeam[pCounter].setEquipmentID(equipmentIDInt);
-                        }
+                       
                     }
                 }
             });
@@ -355,17 +349,8 @@ public class laser {
                             input = JOptionPane.showInputDialog(f, "Enter name:");
                         }
                         buttonsBname[buttonIndex].setText(input);
-                        bCounter = handleCodeName(input, buttonIndex, buttonsBid, playerBNames, blueTeam, bCounter);
+                        bCounter = handleCodeName(input, buttonIndex, buttonsBid, playerBNames, blueTeam, bCounter, f);
                         
-                        String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
-                        if (equipmentID != null && !equipmentID.isEmpty()) {
-                            while (equipmentID != null && !equipmentID.matches("[\\w]+")) 
-                            {
-                                equipmentID = JOptionPane.showInputDialog(f, "Enter equipment ID:");
-                            }
-                            int equipmentIDInt = Integer.parseInt(equipmentID);
-                            blueTeam[bCounter].setEquipmentID(equipmentIDInt);
-                        }
                     }
                 }
             });
@@ -405,7 +390,7 @@ public class laser {
                     team[nameCounter].setCodeName(name);
                     team[nameCounter].score = 0;
                     buttonsArray[buttonIndex].setText(name);
-                    nameCounter++;
+                   
                     usedIDs[counter] = id; //keep track of ids used for pink Team 
                     counter++;
                     String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
@@ -418,6 +403,7 @@ public class laser {
                     }
                     int equipmentIDInt = Integer.parseInt(equipmentID);
                     team[nameCounter].setEquipmentID(equipmentIDInt);
+                    nameCounter++;
                 } else {
                     //check if code name has already been entered into the columns:
                     String checkInput = buttonsArray[buttonIndex].getText();
@@ -437,7 +423,7 @@ public class laser {
     }
 
 
-    public static int handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, String[] playerNames, Player[] team, int nameCounter){
+    public static int handleCodeName(String name, final int buttonIndex, JButton[] buttonsArray, String[] playerNames, Player[] team, int nameCounter, JFrame f){
         String newCodeName = name;
         String IDstring = buttonsArray[buttonIndex].getText();
         int playerID = -1;
@@ -448,11 +434,20 @@ public class laser {
                     playerNames[nameCounter] = newCodeName;
                     team[nameCounter].codeName = newCodeName;
                     team[nameCounter].score = 0;
+                    String equipmentID =  JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                    if (equipmentID != null && !equipmentID.isEmpty()) {
+                        while (equipmentID != null && !equipmentID.matches("[\\w]+"))
+                        {
+                            equipmentID = JOptionPane.showInputDialog(f, "Enter equipment ID:");
+                        }
+                        int equipmentIDInt = Integer.parseInt(equipmentID);
+                        team[nameCounter].setEquipmentID(equipmentIDInt);
+                    }
                     nameCounter++;
                     databaseHandler.savePlayerName(playerID, newCodeName);
                 } catch (SQLException exception){
                 }
-
+ 
             } catch (NumberFormatException ex) {
                 // Handle the case where 'name' cannot be converted to an integer
             }
@@ -462,6 +457,7 @@ public class laser {
         }
         return nameCounter;
     }
+
     
     public static boolean isIDUsed(String input, String[] idArray){
         // Iterate through the stringArray
