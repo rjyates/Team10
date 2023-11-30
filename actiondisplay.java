@@ -3,6 +3,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.ThreadLocalRandom;
+//import java.util.Timer;
 
 // import javazoom.jl.decoder.Bitstream;
 // import javazoom.jl.decoder.JavaLayerException;
@@ -15,21 +20,49 @@ import javax.swing.border.TitledBorder;
 
 public class actiondisplay {
     UDP communicator;
+    Timer gametimer;
+    laser l;
     static JFrame frame;
     static Player[] pinkTeam;
     static Player[] blueTeam;
 
     static JLabel scoreValueB;
     static JLabel scoreValueP;
+    static int pinkValue = 0;
+    static int blueValue = 0;
+    //boolean play = false;
+    //communicator = new UDP();
+
+    static JLabel[] logArray = new JLabel[5];
+    static int counter = 0;
+
+    static GridBagConstraints c = new GridBagConstraints();
     
     public actiondisplay(JFrame Frame, Player[] pinkTeam, Player[] blueTeam) {
         this.pinkTeam = pinkTeam;
         this.blueTeam = blueTeam;
         frame = Frame;
+        //play = true;
         
         communicator = new UDP();
         (new Thread(communicator)).start();
         communicator.broadcast("202");
+
+        
+           
+        
+
+       // this is the 6 minute game timer 6*60*1000
+        gametimer = new Timer(6*60*1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               
+                //change this to call popup
+                System.exit(0);
+                gametimer.stop();
+                //play = false;
+            }
+        });
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
@@ -51,7 +84,7 @@ public class actiondisplay {
         Border plCB = BorderFactory.createCompoundBorder(leftPB , BorderFactory.createCompoundBorder(TBB, TBB));
         Border prCB = BorderFactory.createCompoundBorder(rightBB, BorderFactory.createCompoundBorder(TBB, TBB));
         
-        GridBagConstraints c = new GridBagConstraints();
+       
         c.gridx = 0; // Column index
         c.gridy = 0; // Row index
         c.gridwidth = 1; // Number of columns in the component's display area
@@ -152,6 +185,8 @@ public class actiondisplay {
                 blueTeam[i].label = playerScoreB; //store score label in the Player object
                 frame.add(playerScoreB, c);
             }
+
+            
         }
         
         c.gridx = 0; //pink
@@ -174,7 +209,8 @@ public class actiondisplay {
         frame.add(scoreLabelB, c);
 
         c.gridx = 4; //pink
-        scoreValueP = new JLabel("0000",  SwingConstants.CENTER);
+        //int pinkValue = 0;
+        scoreValueP = new JLabel(String.valueOf(pinkValue),  SwingConstants.CENTER);
         scoreValueP.setForeground(Color.WHITE);
         scoreValueP.setBackground(Color.BLACK);
         scoreValueP.setBorder(rightPB);
@@ -183,7 +219,8 @@ public class actiondisplay {
         frame.add(scoreValueP, c);
 
         c.gridx = 9; //blue
-        scoreValueB = new JLabel("0000",  SwingConstants.CENTER);
+        //int blueValue = 0;
+        scoreValueB = new JLabel(String.valueOf(blueValue),  SwingConstants.CENTER);
         scoreValueB.setForeground(Color.WHITE);
         scoreValueB.setBackground(Color.BLACK);
         scoreValueB.setBorder(rightBB);
@@ -207,113 +244,94 @@ public class actiondisplay {
         frame.setVisible(true);
 
         //playMusic("gamemusic.mp3", 6);
-    }
-
-    public void addHitforBlue() {
-        // Get the current score value from the JLabel
-        String currentScoreValue = scoreValueB.getText();
-
-        // Convert the current score value to an integer
-        int currentScore = Integer.parseInt(currentScoreValue);
-
-        // Add 10 to the score
-        int newScore = currentScore + 10;
-
-        // Convert the new score back to a string
-        String newScoreValue = String.format("%04d", newScore);
-
-        // Update the JLabel with the new score
-        scoreValueB.setText(newScoreValue);
-    }
-
-    public void addBaseHitforBlue() {
-        // Get the current score value from the JLabel
-        String currentScoreValue = scoreValueB.getText();
-
-        // Convert the current score value to an integer
-        int currentScore = Integer.parseInt(currentScoreValue);
-
-        // Add 10 to the score
-        int newScore = currentScore + 100;
-
-        // Convert the new score back to a string
-        String newScoreValue = String.format("%04d", newScore);
-
-        // Update the JLabel with the new score
-        scoreValueB.setText(newScoreValue);
-    }
-
-    public void addHitforPink() {
-        // Get the current score value from the JLabel
-        String currentScoreValue = scoreValueP.getText();
-
-        // Convert the current score value to an integer
-        int currentScore = Integer.parseInt(currentScoreValue);
-
-        // Add 10 to the score
-        int newScore = currentScore + 10;
-
-        // Convert the new score back to a string
-        String newScoreValue = String.format("%04d", newScore);
-
-        // Update the JLabel with the new score
-        scoreValueP.setText(newScoreValue);
-    }
-
-    public void addBaseHitforPink() {
-        // Get the current score value from the JLabel
-        String currentScoreValue = scoreValueP.getText();
-
-        // Convert the current score value to an integer
-        int currentScore = Integer.parseInt(currentScoreValue);
-
-        // Add 10 to the score
-        int newScore = currentScore + 100;
-
-        // Convert the new score back to a string
-        String newScoreValue = String.format("%04d", newScore);
-
-        // Update the JLabel with the new score
-        scoreValueP.setText(newScoreValue);
+        gametimer.setRepeats(false); // Set the timer to run only once
+        gametimer.start();
     }
 
     public void display() {
         frame.setVisible(true);
 
     }
-         public static void processShot(String shootID, String hitID) {
+
+    public static int actionLog(String shoot, String hit, JLabel[] logArray, int counter){
+        String actionMessage = shoot + " hit " + hit;
+        if(counter<5){
+            c.gridy+=1;
+            //c.gridwidth=1;
+            JLabel action = new JLabel(actionMessage);
+            action.setBackground(Color.WHITE);
+            action.setFont(new Font("Georgia", Font.PLAIN, 15));
+            action.setOpaque(true);
+            logArray[counter] = action;
+            frame.add(action, c);
+            counter++;
+        }
+        else{
+            int index = (counter-5)%5;
+            logArray[index].setText(actionMessage);
+            counter++;
+        }  
+        System.out.println("counter is " + counter);
+        return counter;
+    }
+
+    public static void processShot(String shootID, String hitID) {
+        // UDP u = new UDP();
+        // (new Thread(u)).start();
+        // int randomNum = ThreadLocalRandom.current().nextInt(42, 52 + 1);
+        // u.broadcast(String.valueOf(randomNum));
+        // System.out.println("the random num is " + randomNum);
+        
+        
         System.out.println("successfully called");
         System.out.println(shootID + "shot" + hitID);
+
+        int shoot = Integer.parseInt(shootID);
+        int hit = Integer.parseInt(hitID);
+        String shootName= " "; 
+        String hitName = " ";
       
         for (int i = 0; i < pinkTeam.length; i++) {
+            System.out.println(pinkTeam.length);
             // Check if shootID matches pinkTeam[i].equipmentID
-            if (shootID.equals(pinkTeam[i].equipmentID)) {
+
+            if (shoot == pinkTeam[i].equipmentID) {
                 // Increment the score by 10
                 pinkTeam[i].score += 10;
                 // Update the score label (assuming it's a JLabel)
                 pinkTeam[i].label.setText(String.valueOf(pinkTeam[i].score));
+                pinkValue = pinkValue + 10;
+                scoreValueP.setText(String.valueOf(pinkValue));
+                shootName = pinkTeam[i].codeName;
             }
             // Check if hitID matches pinkTeam[i].codeName
-            if (hitID.equals(pinkTeam[i].codeName)) {
+            if (hit == pinkTeam[i].equipmentID) {
                 // Perform any action for a hit on pinkTeam
                 // (e.g., update health, display a message, etc.)
+                hitName = pinkTeam[i].codeName;
             }
         }
 
         for (int i = 0; i < blueTeam.length; i++) {
             // Check if shootID matches blueTeam[i].equipmentID
-            if (shootID.equals(blueTeam[i].equipmentID)) {
+            if (shoot == blueTeam[i].equipmentID) {
                 // Increment the score by 10
                 blueTeam[i].score += 10;
                 // Update the score label (assuming it's a JLabel)
                 blueTeam[i].label.setText(String.valueOf(blueTeam[i].score));
+                blueValue = blueValue + 10;
+                scoreValueB.setText(String.valueOf(blueValue));
+                shootName = blueTeam[i].codeName;
             }
             // Check if hitID matches blueTeam[i].codeName
-            if (hitID.equals(blueTeam[i].codeName)) {
+            if (hit == blueTeam[i].equipmentID) {
                 // Perform any action for a hit on blueTeam
                 // (e.g., update health, display a message, etc.)
+                hitName = blueTeam[i].codeName;
             }
         }
+        counter = actionLog(shootName, hitName, logArray, counter);
+        
     }
     
     // public void playMusic(String musicFilePath, int targetDurationMinutes) {
@@ -363,6 +381,5 @@ public class actiondisplay {
 
     //     musicThread.start();
     // }
-
 
 }
