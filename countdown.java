@@ -40,7 +40,6 @@ public class countdown {
             }
         });
         timer.start();
-
     }
 
     private void addNewLabelWithIcon(String imagePath) {
